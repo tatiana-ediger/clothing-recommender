@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @NodeEntity
-public class Clothing extends AEntity {
+public abstract class Clothing extends AEntity {
 
     @Property(name = "user")
 
@@ -31,9 +31,9 @@ public class Clothing extends AEntity {
         this.name = name;
         this.attributes = attributes;
     }
-//
-//    void addAttribute(Attribute attribute, String value) {
-//        //this.attributes.put(attribute, value);
-//    }
+
+    public void addAttribute(Attribute attribute) {
+        this.attributes.add(attribute);
+    }
 }
 
