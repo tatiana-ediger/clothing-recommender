@@ -1,6 +1,7 @@
 package domain;
-
 import org.neo4j.ogm.annotation.*;
+
+import java.awt.*;
 
 @RelationshipEntity()
 public class ClothingAttribute {
@@ -13,4 +14,6 @@ public class ClothingAttribute {
 
     @EndNode
     private Clothing clothing;
+
+
 }

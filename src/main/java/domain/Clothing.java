@@ -12,7 +12,7 @@ public abstract class Clothing extends AEntity {
 
     @Property(name = "user")
 
-    private int userID;
+    private long userID;
     @Property(name = "name")
     private String name;
 
@@ -22,11 +22,11 @@ public abstract class Clothing extends AEntity {
     public Clothing() {
     }
 
-    public Clothing(int userID, String name) {
+    public Clothing(long userID, String name) {
         this(userID, name, new HashSet<>());
     }
 
-    Clothing(int userID, String name, Set<Attribute> attributes) {
+    Clothing(long userID, String name, Set<Attribute> attributes) {
         this.userID = userID;
         this.name = name;
         this.attributes = attributes;
