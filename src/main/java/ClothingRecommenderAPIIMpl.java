@@ -1,12 +1,12 @@
-import domain.Attribute;
-import domain.Clothing;
-import domain.ClothingType;
-import domain.TopClothing;
+import domain.*;
 import org.neo4j.ogm.session.Session;
 import org.neo4j.ogm.session.SessionFactory;
 
 import java.util.List;
 
+/**
+ * An implementation of the ClothingRecommenderAPI using Neo4J.
+ */
 public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
     private Neo4jSessionFactory sessionFactory;
 
@@ -28,10 +28,10 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
                 c = new TopClothing(userID, clothingName);
                 break;
             case BOTTOM:
-                //TODO
+                c = new BottomClothing(userID, clothingName);
                 break;
             case FOOTWEAR:
-                //TODO
+                c = new FootwearClothing(userID, clothingName);
                 break;
             default:
                 throw new IllegalArgumentException("Not a valid clothing type");
