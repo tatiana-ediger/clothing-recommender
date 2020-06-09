@@ -4,9 +4,12 @@ import domain.ClothingType;
 
 import java.util.List;
 
+/**
+ * Allows a user to enter in clothing, outfits, or ask the program to recommend an outfit.
+ */
 public interface ClothingRecommenderAPI {
 
-    //TODO: Create classes for Bottom, Footwear, other attributes, implement this API, conduct Neo4J queries
+    //TODO: Conduct Neo4J queries
 
     /**
      * The user enters an outfit they like to wear.
