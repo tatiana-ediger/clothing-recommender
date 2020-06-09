@@ -1,6 +1,6 @@
-import domain.Attribute;
+import domain.Descriptor;
 import domain.Clothing;
-import domain.ColorAttribute;
+import domain.ColorDescriptor;
 import domain.TopClothing;
 import org.neo4j.ogm.session.Session;
 
@@ -11,7 +11,7 @@ public class Main {
         Session session = Neo4jSessionFactory.getInstance().getNeo4jSession();
 
         Clothing yellowshirt = new TopClothing(8, "Yellow Shirt");
-        Attribute yellow = new ColorAttribute("yellow");
+        Descriptor yellow = new ColorDescriptor("yellow");
 
         yellowshirt.addAttribute(yellow);
         session.save(yellowshirt);

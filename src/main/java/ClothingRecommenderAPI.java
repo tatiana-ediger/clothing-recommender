@@ -1,4 +1,4 @@
-import domain.Attribute;
+import domain.Descriptor;
 import domain.Clothing;
 import domain.ClothingType;
 
@@ -13,20 +13,23 @@ public interface ClothingRecommenderAPI {
 
     /**
      * The user enters an outfit they like to wear.
+     *
      * @param clothes the given outfit
      */
     void enterOutfit(long userID, List<Clothing> clothes);
 
     /**
      * The user enters the clothing item they like to wear with some of it's attributes.
+     *
      * @param clothingName the name of the new clothing item
-     * @param attrs the different attributes of the given piece of clothing
+     * @param attrs        the different attributes of the given piece of clothing
      */
-    void enterClothingItem(long userID, ClothingType clothingType, String clothingName, List<Attribute> attrs);
+    void enterClothingItem(long userID, ClothingType clothingType, String clothingName, List<Descriptor> attrs);
 
     /**
      * The user enters two items of clothing they like to wear together.
      * Must be different types of clothing (ex: top and bottom or bottom and footwear, not bottom and bottom)
+     *
      * @param c1 the first item of clothing
      * @param c2 the second item of clothing
      */
@@ -36,6 +39,7 @@ public interface ClothingRecommenderAPI {
 
     /**
      * Given one of their clothing items, recommends an outfit to go with it.
+     *
      * @param preferred the given piece of clothing
      * @return the best possible outfit.
      */

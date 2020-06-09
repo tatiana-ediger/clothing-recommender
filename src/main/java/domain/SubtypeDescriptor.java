@@ -3,13 +3,13 @@ package domain;
 import org.neo4j.ogm.annotation.NodeEntity;
 
 @NodeEntity(label = "Subtype")
-public class SubtypeAttribute extends Attribute {
+public class SubtypeDescriptor extends Descriptor {
 
-    public SubtypeAttribute() {
+    public SubtypeDescriptor() {
 
     }
 
-    public SubtypeAttribute(String value) {
+    public SubtypeDescriptor(String value) {
         super(value);
     }
 }

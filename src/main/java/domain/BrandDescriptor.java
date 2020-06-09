@@ -3,13 +3,13 @@ package domain;
 import org.neo4j.ogm.annotation.NodeEntity;
 
 @NodeEntity(label = "Brand")
-public class BrandAttribute extends Attribute {
+public class BrandDescriptor extends Descriptor {
 
-    public BrandAttribute() {
+    public BrandDescriptor() {
 
     }
 
-    public BrandAttribute(String value) {
+    public BrandDescriptor(String value) {
         super(value);
     }
 }

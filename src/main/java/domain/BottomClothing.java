@@ -9,7 +9,7 @@ public class BottomClothing extends Clothing {
 
     }
 
-    public BottomClothing(long userID, String name) {
-        super(userID, name);
+    public BottomClothing(String name) {
+        super(name);
     }
 }
