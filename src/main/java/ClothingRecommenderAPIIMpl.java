@@ -54,6 +54,14 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
 
     @Override
     public List<Outfit> recommendOutfit(long userID, Clothing preferred) {
+        //TODO : this is where we need to do the big query of finding which clothing items we want to recommend
+        // using a ranking system (user preference weighted the largest amount, and then also take into consideration
+        // the other edges that might be important
+        // EX: wants an outfit for bluejeans -> look for all outfits that have a userPreference edge with bluejeans,
+        //                                   -> IF none, look for item of clothing that shares the most ClothingAttrs
+        //                                         with bluejeans (ex. blueslacks), and then see if there's a UserPref
+        //                                         to Footwear/Tops with this, otherwise look at next clothing item and
+        //                                         so on. If we find a UserPref edge for a top but not f
         return null;
     }
 }
