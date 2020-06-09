@@ -1,6 +1,5 @@
 import domain.*;
 import org.neo4j.ogm.session.Session;
-import org.neo4j.ogm.session.SessionFactory;
 
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
     }
 
     @Override
-    public void enterClothingItem(long userID, ClothingType clothingType, String clothingName, List<Attribute> attrs) {
+    public void enterClothingItem(long userID, ClothingType clothingType, String clothingName, List<Descriptor> attrs) {
         Session session = Neo4jSessionFactory.getInstance().getNeo4jSession();
         Clothing c;
         switch (clothingType) {
@@ -36,7 +35,7 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
             default:
                 throw new IllegalArgumentException("Not a valid clothing type");
         }
-        for (Attribute attr: attrs) {
+        for (Descriptor attr : attrs) {
             c.addAttribute(attr);
         }
         session.save(c);

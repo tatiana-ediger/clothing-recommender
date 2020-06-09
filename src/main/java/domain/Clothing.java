@@ -10,30 +10,30 @@ import java.util.Set;
 @NodeEntity
 public abstract class Clothing extends AEntity {
 
-    @Property(name = "user")
 
-    private long userID;
     @Property(name = "name")
     private String name;
 
     @Relationship(type = "CLOTHING_ATTRIBUTE", direction = Relationship.INCOMING)
-    private Set<Attribute> attributes;
+    private Set<Descriptor> descriptors;
+
+    @Relationship(type = "USER_CLOTHING", direction = Relationship.INCOMING)
+    private Set<User> users;
 
     public Clothing() {
     }
 
-    public Clothing(long userID, String name) {
-        this(userID, name, new HashSet<>());
+    public Clothing(String name) {
+        this(name, new HashSet<>());
     }
 
-    Clothing(long userID, String name, Set<Attribute> attributes) {
-        this.userID = userID;
+    Clothing(String name, Set<Descriptor> descriptors) {
         this.name = name;
-        this.attributes = attributes;
+        this.descriptors = descriptors;
     }
 
-    public void addAttribute(Attribute attribute) {
-        this.attributes.add(attribute);
+    public void addAttribute(Descriptor descriptor) {
+        this.descriptors.add(descriptor);
     }
 }
 

@@ -9,7 +9,7 @@ public class FootwearClothing extends Clothing {
 
     }
 
-    public FootwearClothing(long userID, String name) {
-        super(userID, name);
+    public FootwearClothing(String name) {
+        super(name);
     }
 }

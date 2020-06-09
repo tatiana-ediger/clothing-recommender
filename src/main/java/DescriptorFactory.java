@@ -4,11 +4,11 @@ import org.neo4j.ogm.session.Session;
 /**
  * A class to create an Attribute.
  */
-public class AttributeFactory {
+public class DescriptorFactory {
 
     private Session session;
 
-    public AttributeFactory(Neo4jSessionFactory sessionFactory) {
+    public DescriptorFactory(Neo4jSessionFactory sessionFactory) {
         this.session = sessionFactory.getNeo4jSession();
     }
 
@@ -20,31 +20,31 @@ public class AttributeFactory {
      * @param value the value of the given Attribute.
      * @return the Attribute.
      */
-    public Attribute make(AttributeTypes type, String value) {
+    public Descriptor make(AttributeTypes type, String value) {
         switch (type) {
             case COLOR:
                 // We should never have more than one
-                ColorAttribute previous = session.load(ColorAttribute.class, value);
+                ColorDescriptor previous = session.load(ColorDescriptor.class, value);
                 if (previous == null) {
-                    return new ColorAttribute(value);
+                    return new ColorDescriptor(value);
                 }
                 return previous;
             case BRAND:
-                BrandAttribute previousBrand = session.load(BrandAttribute.class, value);
+                BrandDescriptor previousBrand = session.load(BrandDescriptor.class, value);
                 if (previousBrand == null) {
-                    return new BrandAttribute(value);
+                    return new BrandDescriptor(value);
                 }
                 return previousBrand;
             case SUBTYPE:
-                SubtypeAttribute previousSubtype = session.load(SubtypeAttribute.class, value);
+                SubtypeDescriptor previousSubtype = session.load(SubtypeDescriptor.class, value);
                 if (previousSubtype == null) {
-                    return new SubtypeAttribute(value);
+                    return new SubtypeDescriptor(value);
                 }
                 return previousSubtype;
             case FANCINESS:
-                FancinessAttribute previousFancy = session.load(FancinessAttribute.class, value);
+                FancinessDescriptor previousFancy = session.load(FancinessDescriptor.class, value);
                 if (previousFancy == null) {
-                    return new FancinessAttribute(value);
+                    return new FancinessDescriptor(value);
                 }
                 return previousFancy;
             default:
