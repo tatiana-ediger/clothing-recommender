@@ -7,7 +7,8 @@ import java.util.List;
  * An implementation of the ClothingRecommenderAPI using Neo4J.
  */
 public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
-    private Neo4jSessionFactory sessionFactory;
+
+    private final Neo4jSessionFactory sessionFactory;
 
     ClothingRecommenderAPIIMpl(Neo4jSessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
@@ -22,20 +23,20 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
     public void enterClothingItem(long userID, ClothingType clothingType, String clothingName, List<Descriptor> attrs) {
         Session session = Neo4jSessionFactory.getInstance().getNeo4jSession();
         Clothing c;
-        switch (clothingType) {
+        switch (clothingType) { //TODO: move to factory
             case TOP:
-                c = new TopClothing(userID, clothingName);
+                c = new TopClothing(clothingName);
                 break;
             case BOTTOM:
-                c = new BottomClothing(userID, clothingName);
+                c = new BottomClothing(clothingName);
                 break;
             case FOOTWEAR:
-                c = new FootwearClothing(userID, clothingName);
+                c = new FootwearClothing(clothingName);
                 break;
             default:
                 throw new IllegalArgumentException("Not a valid clothing type");
         }
-        for (Descriptor attr : attrs) {
+        for (Descriptor attr : attrs) { //TODO: move to addAttributes method
             c.addAttribute(attr);
         }
         session.save(c);

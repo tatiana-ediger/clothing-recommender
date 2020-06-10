@@ -8,6 +8,11 @@ public class Neo4jSessionFactory {
     private final SessionFactory sessionFactory;
     private final Configuration config;
 
+    public Neo4jSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+        this.config = null;
+    }
+
     // prevent external instantiation
     private Neo4jSessionFactory() {
         this.config = new Configuration.Builder()
@@ -19,6 +24,14 @@ public class Neo4jSessionFactory {
                 .withBasePackages("domain")
                 .build();
         this.sessionFactory = new SessionFactory(this.config, "domain");
+    }
+
+    public static Neo4jSessionFactory getInstance(boolean test) {
+        if (test) {
+            return factory; //TODO: change for testFactory;
+        } else {
+            return getInstance();
+        }
     }
 
     public static Neo4jSessionFactory getInstance() {
