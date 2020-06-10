@@ -1,4 +1,6 @@
-import domain.*;
+import domain.Clothing;
+import domain.ClothingType;
+import domain.Descriptor;
 import org.neo4j.ogm.session.Session;
 
 import java.util.List;
@@ -20,25 +22,10 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
     }
 
     @Override
-    public void enterClothingItem(long userID, ClothingType clothingType, String clothingName, List<Descriptor> attrs) {
+    public void addToCatalog(ClothingType clothingType, String clothingName, List<Descriptor> attrs) {
         Session session = this.sessionFactory.getNeo4jSession();
-        Clothing c;
-        switch (clothingType) { //TODO: move to factory
-            case TOP:
-                c = new TopClothing(clothingName);
-                break;
-            case BOTTOM:
-                c = new BottomClothing(clothingName);
-                break;
-            case FOOTWEAR:
-                c = new FootwearClothing(clothingName);
-                break;
-            default:
-                throw new IllegalArgumentException("Not a valid clothing type");
-        }
-        for (Descriptor attr : attrs) { //TODO: move to addAttributes method
-            c.addAttribute(attr);
-        }
+        Clothing c = ClothingFactory.make(clothingType, clothingName);
+        c.addDescriptors(attrs);
         session.save(c);
     }
 
@@ -48,20 +35,21 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
     }
 
     @Override
-    public List<Outfit> recommendOutfit(long userID) {
-        return null;
+    public List<Clothing> recommendPurchase(long userID) {
+        //Rank the number of connections each clothing
+        Session session = this.sessionFactory.getNeo4jSession();
+        return null; //TODO: implement
     }
 
     @Override
-    public List<Outfit> recommendOutfit(long userID, Clothing preferred) {
-        //TODO : this is where we need to do the big query of finding which clothing items we want to recommend
-        // using a ranking system (user preference weighted the largest amount, and then also take into consideration
-        // the other edges that might be important
-        // EX: wants an outfit for bluejeans -> look for all outfits that have a userPreference edge with bluejeans,
-        //                                   -> IF none, look for item of clothing that shares the most ClothingAttrs
-        //                                         with bluejeans (ex. blueslacks), and then see if there's a UserPref
-        //                                         to Footwear/Tops with this, otherwise look at next clothing item and
-        //                                         so on. If we find a UserPref edge for a top but not f
+    public List<Clothing> recommendPurchaseTogether(long userID, Clothing selected) {
+        Session session = this.sessionFactory.getNeo4jSession();
+
+        // 1. find the groupings of the selected clothing
+        // 2. Find all of the other clothigns in those groupings that are not the same clothingtype
+        // 3. Filter by not already in the user's closet
+        // TODO: maybe, sort?
         return null;
+        //Iterable<Clothing> session.query(Clothing.s, "MATCH (n:Clothing)", new HashMap<>());
     }
 }

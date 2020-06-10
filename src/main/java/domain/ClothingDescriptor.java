@@ -3,7 +3,7 @@ package domain;
 import org.neo4j.ogm.annotation.*;
 
 @RelationshipEntity()
-public class ClothingAttribute {
+public class ClothingDescriptor {
     @Id
     @GeneratedValue
     private Long relationshipId;
@@ -13,6 +13,4 @@ public class ClothingAttribute {
 
     @EndNode
     private Clothing clothing;
-
-
 }

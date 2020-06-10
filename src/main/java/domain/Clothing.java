@@ -1,22 +1,25 @@
 package domain;
 
-import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Property;
 import org.neo4j.ogm.annotation.Relationship;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @NodeEntity
-public abstract class Clothing {
+public abstract class Clothing extends AEntity {
 
-    @Id()
     @Property(name = "name")
     private String name;
 
-    @Relationship(type = "CLOTHING_ATTRIBUTE", direction = Relationship.INCOMING)
+    @Relationship(type = "CLOTHING_DESCRIPTOR", direction = Relationship.INCOMING)
     private Set<Descriptor> descriptors;
+
+    @Relationship(type = "CLOTHING_GROUPING", direction = Relationship.INCOMING)
+    private Set<Grouping> groupings;
 
     @Relationship(type = "USER_CLOTHING", direction = Relationship.INCOMING)
     private Set<User> users;
@@ -33,8 +36,21 @@ public abstract class Clothing {
         this.descriptors = descriptors;
     }
 
-    public void addAttribute(Descriptor descriptor) {
-        this.descriptors.add(descriptor);
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), this.getName(), this.getDescriptors(), this.getUsers());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (! (o instanceof Clothing)) return false;
+        if (! super.equals(o)) return false;
+        Clothing clothing = (Clothing) o;
+        return super.equals(o) &&
+                Objects.equals(this.getName(), clothing.getName()) &&
+                Objects.equals(this.getDescriptors(), clothing.getDescriptors()) &&
+                Objects.equals(this.getUsers(), clothing.getUsers());
     }
 
     public String getName() {
@@ -49,16 +65,24 @@ public abstract class Clothing {
         return this.descriptors;
     }
 
-    public void setDescriptors(Set<Descriptor> descriptors) {
-        this.descriptors = descriptors;
-    }
-
     public Set<User> getUsers() {
         return this.users;
     }
 
-    public void setUsers(Set<User> users) {
-        this.users = users;
+    public Set<Grouping> getGroupings() {
+        return this.groupings;
     }
+
+    public void addDescriptors(List<Descriptor> attrs) {
+        for (Descriptor attr : attrs) {
+            this.addDescriptor(attr);
+        }
+    }
+
+    public void addDescriptor(Descriptor descriptor) {
+        this.descriptors.add(descriptor);
+    }
+
+    //TODO: addGrouping(s)
 }
 

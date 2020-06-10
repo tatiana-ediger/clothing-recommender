@@ -13,7 +13,7 @@ public class Main {
         Clothing s1 = new TopClothing("Yellow Shirt");
         Descriptor yellow = new ColorDescriptor("yellow");
 
-        s1.addAttribute(yellow);
+        s1.addDescriptor(yellow);
         session.save(s1);
 
     }

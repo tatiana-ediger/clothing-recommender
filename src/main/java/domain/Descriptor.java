@@ -14,7 +14,7 @@ public abstract class Descriptor {
     @Id()
     private String value;
 
-    @Relationship(type = "CLOTHING_ATTRIBUTE", direction = Relationship.OUTGOING)
+    @Relationship(type = "CLOTHING_DESCRIPTOR", direction = Relationship.OUTGOING)
     private Set<Clothing> clothings;
 
     public Descriptor() {

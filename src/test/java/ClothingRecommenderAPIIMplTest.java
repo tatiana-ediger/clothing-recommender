@@ -60,15 +60,15 @@ public class ClothingRecommenderAPIIMplTest {
     public void testEnterClothingItem() {
 
         List<Descriptor> descriptors = new ArrayList<Descriptor>();
-        descriptors.add(descriptorFactory.make(AttributeTypes.COLOR, "green"));
-        descriptors.add(descriptorFactory.make(AttributeTypes.COLOR, "black"));
-        descriptors.add(descriptorFactory.make(AttributeTypes.COLOR, "blue"));
-        descriptors.add(descriptorFactory.make(AttributeTypes.COLOR, "yellow"));
-        descriptors.add(descriptorFactory.make(AttributeTypes.BRAND, "Gap"));
-        descriptors.add(descriptorFactory.make(AttributeTypes.FANCINESS, "extra formal"));
-        descriptors.add(descriptorFactory.make(AttributeTypes.SUBTYPE, "jeans"));
+        descriptors.add(descriptorFactory.make(DescriptorTypes.COLOR, "green"));
+        descriptors.add(descriptorFactory.make(DescriptorTypes.COLOR, "black"));
+        descriptors.add(descriptorFactory.make(DescriptorTypes.COLOR, "blue"));
+        descriptors.add(descriptorFactory.make(DescriptorTypes.COLOR, "yellow"));
+        descriptors.add(descriptorFactory.make(DescriptorTypes.BRAND, "Gap"));
+        descriptors.add(descriptorFactory.make(DescriptorTypes.FANCINESS, "extra formal"));
+        descriptors.add(descriptorFactory.make(DescriptorTypes.SUBTYPE, "jeans"));
 
-        api.enterClothingItem(123, ClothingType.BOTTOM, "Test Bottom 1", descriptors);
+        api.addToCatalog(123, ClothingType.BOTTOM, "Test Bottom 1", descriptors);
 
         Collection<Clothing> allClothings = session.loadAll(Clothing.class);
         assertEquals(allClothings.size(), 1);

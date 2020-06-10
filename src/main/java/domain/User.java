@@ -14,7 +14,7 @@ public class User extends AEntity {
     private String name;
 
     @Relationship(type = "USER_CLOTHING", direction = Relationship.OUTGOING)
-    private Set<Clothing> clothes;
+    private Set<Clothing> closet; //Cloths + Set
 
     public User() {
     }
@@ -23,8 +23,12 @@ public class User extends AEntity {
         this(name, new HashSet<>());
     }
 
-    User(String name, Set<Clothing> clothes) {
+    User(String name, Set<Clothing> closet) {
         this.name = name;
-        this.clothes = clothes;
+        this.closet = closet;
+    }
+
+    void addToCloset(Clothing clothing) {
+        this.closet.add(clothing);
     }
 }
