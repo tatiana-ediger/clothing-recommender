@@ -21,7 +21,7 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
 
     @Override
     public void enterClothingItem(long userID, ClothingType clothingType, String clothingName, List<Descriptor> attrs) {
-        Session session = Neo4jSessionFactory.getInstance().getNeo4jSession();
+        Session session = this.sessionFactory.getNeo4jSession();
         Clothing c;
         switch (clothingType) { //TODO: move to factory
             case TOP:
