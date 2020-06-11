@@ -5,11 +5,10 @@ import org.neo4j.ogm.annotation.RelationshipEntity;
 import org.neo4j.ogm.annotation.StartNode;
 
 @RelationshipEntity()
-
-public class ClothingGrouping extends ARelationship {
+public class UserClothing extends ARelationship {
 
     @StartNode
-    private Grouping descriptor;
+    private User user;
 
     @EndNode
     private Clothing clothing;

@@ -1,12 +1,11 @@
 package domain;
 
-import org.neo4j.ogm.annotation.*;
+import org.neo4j.ogm.annotation.EndNode;
+import org.neo4j.ogm.annotation.RelationshipEntity;
+import org.neo4j.ogm.annotation.StartNode;
 
 @RelationshipEntity()
-public class ClothingDescriptor {
-    @Id
-    @GeneratedValue
-    private Long relationshipId;
+public class ClothingDescriptor extends ARelationship {
 
     @StartNode
     private Descriptor descriptor;
