@@ -6,7 +6,7 @@ import org.neo4j.ogm.session.Session;
  */
 public class DescriptorFactory {
 
-    private Session session;
+    private final Session session;
 
     public DescriptorFactory(Neo4jSessionFactory sessionFactory) {
         this.session = sessionFactory.getNeo4jSession();
@@ -20,29 +20,29 @@ public class DescriptorFactory {
      * @param value the value of the given Attribute.
      * @return the Attribute.
      */
-    public Descriptor make(AttributeTypes type, String value) {
+    public Descriptor make(DescriptorTypes type, String value) {
         switch (type) {
             case COLOR:
                 // We should never have more than one
-                ColorDescriptor previous = session.load(ColorDescriptor.class, value);
+                ColorDescriptor previous = this.session.load(ColorDescriptor.class, value);
                 if (previous == null) {
                     return new ColorDescriptor(value);
                 }
                 return previous;
             case BRAND:
-                BrandDescriptor previousBrand = session.load(BrandDescriptor.class, value);
+                BrandDescriptor previousBrand = this.session.load(BrandDescriptor.class, value);
                 if (previousBrand == null) {
                     return new BrandDescriptor(value);
                 }
                 return previousBrand;
             case SUBTYPE:
-                SubtypeDescriptor previousSubtype = session.load(SubtypeDescriptor.class, value);
+                SubtypeDescriptor previousSubtype = this.session.load(SubtypeDescriptor.class, value);
                 if (previousSubtype == null) {
                     return new SubtypeDescriptor(value);
                 }
                 return previousSubtype;
             case FANCINESS:
-                FancinessDescriptor previousFancy = session.load(FancinessDescriptor.class, value);
+                FancinessDescriptor previousFancy = this.session.load(FancinessDescriptor.class, value);
                 if (previousFancy == null) {
                     return new FancinessDescriptor(value);
                 }

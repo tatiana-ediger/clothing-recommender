@@ -1,9 +1,9 @@
 package domain;
 
-public enum AttributeTypes {
+public enum DescriptorTypes {
 
     COLOR("color"), BRAND("brand"), SUBTYPE("subtype"), FANCINESS("fanciness");
 
-    AttributeTypes(String type) {
+    DescriptorTypes(String type) {
     }
 }

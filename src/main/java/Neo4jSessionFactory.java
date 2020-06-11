@@ -4,9 +4,14 @@ import org.neo4j.ogm.session.SessionFactory;
 
 public class Neo4jSessionFactory {
 
-    private static final Neo4jSessionFactory factory = new Neo4jSessionFactory();
+    //private static final Neo4jSessionFactory factory = new Neo4jSessionFactory();
     private final SessionFactory sessionFactory;
     private final Configuration config;
+
+    public Neo4jSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+        this.config = null;
+    }
 
     // prevent external instantiation
     private Neo4jSessionFactory() {
@@ -21,8 +26,17 @@ public class Neo4jSessionFactory {
         this.sessionFactory = new SessionFactory(this.config, "domain");
     }
 
+    public static Neo4jSessionFactory getInstance(boolean test) {
+        return null;
+//        if (test) {
+//            //return factory; //TODO: change for testFactory;
+//        } else {
+//            return getInstance();
+//        }
+    }
+
     public static Neo4jSessionFactory getInstance() {
-        return factory;
+        return null;//factory;
     }
 
     public Session getNeo4jSession() {
