@@ -47,8 +47,7 @@ public abstract class Clothing extends AEntity {
         if (! (o instanceof Clothing)) return false;
         if (! super.equals(o)) return false;
         Clothing clothing = (Clothing) o;
-        return super.equals(o) &&
-                Objects.equals(this.getName(), clothing.getName()) &&
+        return Objects.equals(this.getName(), clothing.getName()) &&
                 Objects.equals(this.getDescriptors(), clothing.getDescriptors()) &&
                 Objects.equals(this.getUsers(), clothing.getUsers());
     }
@@ -74,15 +73,19 @@ public abstract class Clothing extends AEntity {
     }
 
     public void addDescriptors(List<Descriptor> attrs) {
-        for (Descriptor attr : attrs) {
-            this.addDescriptor(attr);
-        }
+        this.descriptors.addAll(attrs);
     }
 
     public void addDescriptor(Descriptor descriptor) {
         this.descriptors.add(descriptor);
     }
 
-    //TODO: addGrouping(s)
+    public void addGroupings(List<Grouping> attrs) {
+        this.groupings.addAll(attrs);
+    }
+
+    public void addGrouping(Grouping grouping) {
+        this.groupings.add(grouping);
+    }
 }
 

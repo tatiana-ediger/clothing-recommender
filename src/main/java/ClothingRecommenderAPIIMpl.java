@@ -3,7 +3,10 @@ import domain.ClothingType;
 import domain.Descriptor;
 import org.neo4j.ogm.session.Session;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * An implementation of the ClothingRecommenderAPI using Neo4J.
@@ -49,7 +52,15 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
         // 2. Find all of the other clothigns in those groupings that are not the same clothingtype
         // 3. Filter by not already in the user's closet
         // TODO: maybe, sort?
-        return null;
-        //Iterable<Clothing> session.query(Clothing.s, "MATCH (n:Clothing)", new HashMap<>());
+
+        Map<String, Object> params = new HashMap<>();
+
+        Iterable<Clothing> result = session.query(Clothing.class, "MATCH (n:Clothing) RETURN n;", params);
+        for (Clothing c : result) {
+            System.out.println(c.getName());
+        }
+        List<Clothing> clothings = new ArrayList<>();
+        result.forEach(clothings::add);
+        return clothings;
     }
 }
