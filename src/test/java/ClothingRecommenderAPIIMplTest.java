@@ -9,7 +9,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -52,70 +51,191 @@ public class ClothingRecommenderAPIIMplTest {
 
     @BeforeEach
     public void startupTestData() {
-        StringBuilder query = new StringBuilder();
-        query.append("CREATE (bluejeans:Clothing:Bottom { name: 'bluejeans' })\n");
-        query.append("CREATE (blackslacks:Clothing:Bottom { name: 'blackslacks' })\n");
-        query.append("CREATE (blackjeans:Clothing:Bottom { name: 'blackjeans' })\n");
-        query.append("CREATE (khakislacks:Clothing:Bottom { name: 'khakislacks' })\n");
-        query.append("CREATE (grayjeans:Clothing:Bottom { name: 'grayjeans' })\n");
-        query.append("CREATE (grayshorts:Clothing:Bottom { name: 'grayshorts' })\n");
-        query.append("CREATE (redskirt:Clothing:Bottom { name: 'redskirt' })\n");
-        query.append("CREATE (blackskirt:Clothing:Bottom { name: 'blackskirt' })\n");
+        Descriptor jeans = DescriptorFactory.make(DescriptorTypes.SUBTYPE, "jeans", this.session);
+        Descriptor slacks = DescriptorFactory.make(DescriptorTypes.SUBTYPE, "slacks", this.session);
+        Descriptor shorts = DescriptorFactory.make(DescriptorTypes.SUBTYPE, "shorts", this.session);
+        Descriptor skirt = DescriptorFactory.make(DescriptorTypes.SUBTYPE, "skirt", this.session);
+        Descriptor sandals = DescriptorFactory.make(DescriptorTypes.SUBTYPE, "andals", this.session);
+        Descriptor dress_shoes = DescriptorFactory.make(DescriptorTypes.SUBTYPE, "dress_shoes", this.session);
+        Descriptor heels = DescriptorFactory.make(DescriptorTypes.SUBTYPE, "heels", this.session);
+        Descriptor button_up = DescriptorFactory.make(DescriptorTypes.SUBTYPE, "button_up", this.session);
+        Descriptor blouse = DescriptorFactory.make(DescriptorTypes.SUBTYPE, "blouse", this.session);
+        Descriptor top = DescriptorFactory.make(DescriptorTypes.SUBTYPE, "top", this.session);
+        Descriptor sweater = DescriptorFactory.make(DescriptorTypes.SUBTYPE, "sweater", this.session);
+        Descriptor t_shirt = DescriptorFactory.make(DescriptorTypes.SUBTYPE, "t_shirt", this.session);
+        Descriptor red = DescriptorFactory.make(DescriptorTypes.COLOR, "red", this.session);
+        Descriptor blue = DescriptorFactory.make(DescriptorTypes.COLOR, "blue", this.session);
+        Descriptor black = DescriptorFactory.make(DescriptorTypes.COLOR, "black", this.session);
+        Descriptor white = DescriptorFactory.make(DescriptorTypes.COLOR, "white", this.session);
+        Descriptor khaki = DescriptorFactory.make(DescriptorTypes.COLOR, "khaki", this.session);
+        Descriptor green = DescriptorFactory.make(DescriptorTypes.COLOR, "green", this.session);
+        Descriptor gray = DescriptorFactory.make(DescriptorTypes.COLOR, "gray", this.session);
+        Descriptor brown = DescriptorFactory.make(DescriptorTypes.COLOR, "brown", this.session);
+        Descriptor vans = DescriptorFactory.make(DescriptorTypes.BRAND, "Vans", this.session);
+        Descriptor nike = DescriptorFactory.make(DescriptorTypes.BRAND, "Nike", this.session);
+        Descriptor birkenstock = DescriptorFactory.make(DescriptorTypes.BRAND, "Birkenstock", this.session);
+        Descriptor fancy = DescriptorFactory.make(DescriptorTypes.FANCINESS, "fancy", this.session);
+        Descriptor casual = DescriptorFactory.make(DescriptorTypes.FANCINESS, "casual", this.session);
 
+        Clothing blue_jeans = ClothingFactory.make(ClothingType.BOTTOM, "Blue Jeans");
+        blue_jeans.addDescriptor(jeans);
+        blue_jeans.addDescriptor(blue);
+        session.save(blue_jeans);
+
+        Clothing blue_shorts = ClothingFactory.make(ClothingType.BOTTOM, "Blue Shorts");
+        blue_shorts.addDescriptor(casual);
+        blue_shorts.addDescriptor(blue);
+        blue_shorts.addDescriptor(shorts);
+        session.save(blue_shorts);
+
+        Clothing black_slacks = ClothingFactory.make(ClothingType.BOTTOM, "Black Slacks");
+        black_slacks.addDescriptor(black);
+        black_slacks.addDescriptor(slacks);
+        session.save(black_slacks);
+
+        Clothing black_jeans = ClothingFactory.make(ClothingType.BOTTOM, "Black Jeans");
+        black_jeans.addDescriptor(jeans);
+        black_jeans.addDescriptor(black);
+        session.save(black_jeans);
+
+        Clothing khaki_slacks = ClothingFactory.make(ClothingType.BOTTOM, "Khaki Slacks");
+        khaki_slacks.addDescriptor(slacks);
+        khaki_slacks.addDescriptor(khaki);
+        session.save(khaki_slacks);
+
+        Clothing gray_jeans = ClothingFactory.make(ClothingType.BOTTOM, "Gray Jeans");
+        gray_jeans.addDescriptor(jeans);
+        gray_jeans.addDescriptor(gray);
+        session.save(gray_jeans);
+
+        Clothing gray_shorts = ClothingFactory.make(ClothingType.BOTTOM, "Gray Shorts");
+        gray_shorts.addDescriptor(casual);
+        gray_shorts.addDescriptor(gray);
+        gray_shorts.addDescriptor(shorts);
+        session.save(gray_shorts);
+
+        Clothing red_skirt = ClothingFactory.make(ClothingType.BOTTOM, "Red Skirt");
+        red_skirt.addDescriptor(fancy);
+        red_skirt.addDescriptor(red);
+        red_skirt.addDescriptor(skirt);
+        session.save(red_skirt);
+
+        Clothing black_skirt = ClothingFactory.make(ClothingType.BOTTOM, "Black Skirt");
+        black_skirt.addDescriptor(black);
+        black_skirt.addDescriptor(skirt);
+        black_skirt.addDescriptor(casual);
+        session.save(black_skirt);
+
+        Clothing fancy_black_skirt = ClothingFactory.make(ClothingType.BOTTOM, "Fancy Black Skirt");
+        fancy_black_skirt.addDescriptor(black);
+        fancy_black_skirt.addDescriptor(skirt);
+        fancy_black_skirt.addDescriptor(fancy);
+        session.save(fancy_black_skirt);
+
+        //TODO: figure out how to represent clothing that is both top and bottom
         //query.append("CREATE (reddress:Clothing:Bottom:Top { name: 'reddress' })\n");
+        //        reddress.addDescriptor(red);
 
-        query.append("CREATE (whitebuttonup:Clothing:Top { name: 'whitebuttonup' })\n");
-        query.append("CREATE (blacktshirt:Clothing:Top { name: 'blacktshirt' })\n");
-        query.append("CREATE (redtshirt:Clothing:Top { name: 'redtshirt' })\n");
-        query.append("CREATE (greentshirt:Clothing:Top { name: 'greentshirt' })\n");
-        query.append("CREATE (bluebuttonup:Clothing:Top { name: 'bluebuttonup' })\n");
-        query.append("CREATE (whiteblouse:Clothing:Top { name: 'whiteblouse' })\n");
-        query.append("CREATE (blackfancytop:Clothing:Top { name: 'blackfancytop' })\n");
-        query.append("CREATE (graysweater:Clothing:Top { name: 'graysweater' })\n");
 
-        query.append("CREATE (whitetvans:Clothing:Footwear { name: 'whitetvans' })\n");
-        query.append("CREATE (blacksneakers:Clothing:Footwear { name: 'blacksneakers' })\n");
-        query.append("CREATE (blackdressshoes:Clothing:Footwear { name: 'blackdressshoes' })\n");
-        query.append("CREATE (browndressshoes:Clothing:Footwear { name: 'browndressshoes' })\n");
-        query.append("CREATE (blackvans:Clothing:Footwear { name: 'blackvans' })\n");
-        query.append("CREATE (blackheels:Clothing:Footwear { name: 'blackheels' })\n");
-        query.append("CREATE (brownsandals:Clothing:Footwear { name: 'brownsandals' })\n");
+        Clothing white_buttonup = ClothingFactory.make(ClothingType.TOP, "White Buttonup");
+        white_buttonup.addDescriptor(fancy);
+        white_buttonup.addDescriptor(white);
+        white_buttonup.addDescriptor(button_up);
+        session.save(white_buttonup);
 
-        query.append("CREATE (jeans:Descriptor:Subtype {name: 'jeans'})\n");
-        query.append("CREATE (slacks:Descriptor:Subtype {name: 'slacks'})\n");
-        query.append("CREATE (skirt:Descriptor:Subtype {name: 'skirt'})\n");
-        query.append("CREATE (sandals:Descriptor:Subtype {name: 'andals'})\n");
-        query.append("CREATE (dressshoes:Descriptor:Subtype {name: 'ressshoes'})\n");
-        query.append("CREATE (heels:Descriptor:Subtype {name: 'eels'})\n");
-        query.append("CREATE (red:Descriptor:Color {name:'red'})\n");
-        query.append("CREATE (blue:Descriptor:Color {name:'blue'})\n");
-        query.append("CREATE (black:Descriptor:Color {name:'black'})\n");
-        query.append("CREATE (white:Descriptor:Color {name:'white'})\n");
-        query.append("CREATE (green:Descriptor:Color {name:'green'})\n");
-        query.append("CREATE (gray:Descriptor:Color {name:'gray'})\n");
-        query.append("CREATE (brown:Descriptor:Color {name:'brown'})\n");
-        query.append("CREATE (vans:Descriptor:Brand {name: 'Vans'})\n");
-        query.append("CREATE (nike:Descriptor:Brand {name: 'Nike'})\n");
-        query.append("CREATE (fancy:Descriptor:Fanciness {name: 'fancy'})\n");
-        query.append("CREATE (casual:Descriptor:Fanciness {name: 'casual'})\n");
+        Clothing black_tshirt = ClothingFactory.make(ClothingType.TOP, "Black Tshirt");
+        black_tshirt.addDescriptor(black);
+        black_tshirt.addDescriptor(t_shirt);
+        black_tshirt.addDescriptor(casual);
+        session.save(black_tshirt);
 
-        query.append("CREATE (jeans)-[:CLOTHING_DESCRIPTOR]->(bluejeans)");
-        query.append("CREATE (jeans)-[:CLOTHING_DESCRIPTOR]->(grayjeans)\n");
-        query.append("CREATE (jeans)-[:CLOTHING_DESCRIPTOR]->(blackjeans)\n");
-        query.append("CREATE (red)-[:CLOTHING_DESCRIPTOR]->(redtshirt)\n");
-        query.append("CREATE (red)-[:CLOTHING_DESCRIPTOR]->(redskirt)\n");
-        query.append("CREATE (red)-[:CLOTHING_DESCRIPTOR]->(reddress)\n");
-        query.append("CREATE (fancy)-[:CLOTHING_DESCRIPTOR]->(redskirt)\n");
-        query.append("CREATE (fancy)-[:CLOTHING_DESCRIPTOR]->(blackfancytop)\n");
-        query.append("CREATE (fancy)-[:CLOTHING_DESCRIPTOR]->(whiteblouse)\n");
-        query.append("CREATE (fancy)-[:CLOTHING_DESCRIPTOR]->(whitebuttonup)");
-        query.append("CREATE (casual)-[:CLOTHING_DESCRIPTOR]->(redtshirt)\n");
-        query.append("CREATE (casual)-[:CLOTHING_DESCRIPTOR]->(whitetshirt)\n");
-        query.append("CREATE (casual)-[:CLOTHING_DESCRIPTOR]->(greentshirt)\n");
-        query.append("CREATE (casual)-[:CLOTHING_DESCRIPTOR]->(blueshorts)\n");
-        query.append("CREATE (casual)-[:CLOTHING_DESCRIPTOR]->(grayshorts)\n");
+        Clothing red_tshirt = ClothingFactory.make(ClothingType.TOP, "Red Tshirt");
+        red_tshirt.addDescriptor(red);
+        red_tshirt.addDescriptor(casual);
+        red_tshirt.addDescriptor(t_shirt);
+        session.save(red_tshirt);
 
-        session.query(query.toString(), new HashMap<>());
+        Clothing white_tshirt = ClothingFactory.make(ClothingType.TOP, "White Tshirt");
+        white_tshirt.addDescriptor(casual);
+        white_tshirt.addDescriptor(t_shirt);
+        white_tshirt.addDescriptor(white);
+        session.save(white_tshirt);
+
+        Clothing fancy_white_tshirt = ClothingFactory.make(ClothingType.TOP, "Fancy White Tshirt");
+        fancy_white_tshirt.addDescriptor(fancy);
+        fancy_white_tshirt.addDescriptor(t_shirt);
+        fancy_white_tshirt.addDescriptor(white);
+        session.save(fancy_white_tshirt);
+
+        Clothing green_tshirt = ClothingFactory.make(ClothingType.TOP, "Green Tshirt");
+        green_tshirt.addDescriptor(casual);
+        green_tshirt.addDescriptor(t_shirt);
+        green_tshirt.addDescriptor(green);
+        session.save(green_tshirt);
+
+        Clothing blue_buttonup = ClothingFactory.make(ClothingType.TOP, "Blue Buttonup");
+        blue_buttonup.addDescriptor(blue);
+        blue_buttonup.addDescriptor(button_up);
+        session.save(blue_buttonup);
+
+        Clothing white_blouse = ClothingFactory.make(ClothingType.TOP, "White Blouse");
+        white_blouse.addDescriptor(fancy);
+        white_blouse.addDescriptor(white);
+        white_blouse.addDescriptor(blouse);
+        session.save(white_blouse);
+
+        Clothing black_fancy_top = ClothingFactory.make(ClothingType.TOP, "Black Fancy Top");
+        black_fancy_top.addDescriptor(fancy);
+        black_fancy_top.addDescriptor(black);
+        black_fancy_top.addDescriptor(top);
+        session.save(black_fancy_top);
+
+        Clothing gray_sweater = ClothingFactory.make(ClothingType.TOP, "Gray Sweater");
+        gray_sweater.addDescriptor(gray);
+        gray_sweater.addDescriptor(sweater);
+        gray_sweater.addDescriptor(fancy);
+        session.save(gray_sweater);
+
+        Clothing white_vans = ClothingFactory.make(ClothingType.FOOTWEAR, "White Vans");
+        white_vans.addDescriptor(white);
+        white_vans.addDescriptor(vans);
+        session.save(white_vans);
+
+        Clothing black_sneakers = ClothingFactory.make(ClothingType.FOOTWEAR, "Black Sneakers");
+        black_sneakers.addDescriptor(black);
+        black_sneakers.addDescriptor(casual);
+        black_sneakers.addDescriptor(nike);
+        session.save(black_sneakers);
+
+        Clothing black_dress_shoes = ClothingFactory.make(ClothingType.FOOTWEAR, "Black Dress Shoes");
+        black_dress_shoes.addDescriptor(black);
+        black_dress_shoes.addDescriptor(dress_shoes);
+        black_dress_shoes.addDescriptor(fancy);
+        session.save(black_dress_shoes);
+
+        Clothing brown_dress_shoes = ClothingFactory.make(ClothingType.FOOTWEAR, "Brown Dress Shoes");
+        brown_dress_shoes.addDescriptor(brown);
+        brown_dress_shoes.addDescriptor(dress_shoes);
+        brown_dress_shoes.addDescriptor(fancy);
+        session.save(brown_dress_shoes);
+
+        Clothing black_vans = ClothingFactory.make(ClothingType.FOOTWEAR, "Black Vans");
+        black_vans.addDescriptor(black);
+        black_vans.addDescriptor(vans);
+        session.save(black_vans);
+
+        Clothing black_heels = ClothingFactory.make(ClothingType.FOOTWEAR, "Black Heels");
+        black_heels.addDescriptor(black);
+        black_heels.addDescriptor(fancy);
+        black_heels.addDescriptor(heels);
+        session.save(black_heels);
+
+        Clothing brown_sandals = ClothingFactory.make(ClothingType.FOOTWEAR, "Brown Sandals");
+        brown_sandals.addDescriptor(brown);
+        brown_sandals.addDescriptor(sandals);
+        brown_sandals.addDescriptor(casual);
+        brown_sandals.addDescriptor(birkenstock);
+        session.save(brown_sandals);
     }
 
     @AfterEach
@@ -133,13 +253,13 @@ public class ClothingRecommenderAPIIMplTest {
     public void testEnterClothingItem() {
 
         List<Descriptor> descriptors = new ArrayList<Descriptor>();
-        descriptors.add(descriptorFactory.make(DescriptorTypes.COLOR, "green"));
-        descriptors.add(descriptorFactory.make(DescriptorTypes.COLOR, "black"));
-        descriptors.add(descriptorFactory.make(DescriptorTypes.COLOR, "blue"));
-        descriptors.add(descriptorFactory.make(DescriptorTypes.COLOR, "yellow"));
-        descriptors.add(descriptorFactory.make(DescriptorTypes.BRAND, "Gap"));
-        descriptors.add(descriptorFactory.make(DescriptorTypes.FANCINESS, "extra formal"));
-        descriptors.add(descriptorFactory.make(DescriptorTypes.SUBTYPE, "jeans"));
+        descriptors.add(descriptorFactory.make(DescriptorTypes.COLOR, "green", this.session));
+        descriptors.add(descriptorFactory.make(DescriptorTypes.COLOR, "black", this.session));
+        descriptors.add(descriptorFactory.make(DescriptorTypes.COLOR, "blue", this.session));
+        descriptors.add(descriptorFactory.make(DescriptorTypes.COLOR, "yellow", this.session));
+        descriptors.add(descriptorFactory.make(DescriptorTypes.BRAND, "Gap", this.session));
+        descriptors.add(descriptorFactory.make(DescriptorTypes.FANCINESS, "extra formal", this.session));
+        descriptors.add(descriptorFactory.make(DescriptorTypes.SUBTYPE, "jeans", this.session));
 
         api.addToCatalog(ClothingType.BOTTOM, "Test Bottom 1", descriptors);
 

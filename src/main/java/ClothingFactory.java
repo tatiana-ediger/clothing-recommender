@@ -2,7 +2,7 @@ import domain.*;
 
 public class ClothingFactory {
     public static Clothing make(ClothingType clothingType, String clothingName) {
-        switch (clothingType) { //TODO: move to factory
+        switch (clothingType) {
             case TOP:
                 return new TopClothing(clothingName);
             case BOTTOM:

@@ -20,31 +20,39 @@ public class DescriptorFactory {
      * @param value the value of the given Attribute.
      * @return the Attribute.
      */
-    public Descriptor make(DescriptorTypes type, String value) {
+    public static Descriptor make(DescriptorTypes type, String value, Session session) {
         switch (type) {
             case COLOR:
                 // We should never have more than one
-                ColorDescriptor previous = this.session.load(ColorDescriptor.class, value);
+                ColorDescriptor previous = session.load(ColorDescriptor.class, value);
                 if (previous == null) {
-                    return new ColorDescriptor(value);
+                    Descriptor desc = new ColorDescriptor(value);
+                    session.save(desc);
+                    return desc;
                 }
                 return previous;
             case BRAND:
-                BrandDescriptor previousBrand = this.session.load(BrandDescriptor.class, value);
+                BrandDescriptor previousBrand = session.load(BrandDescriptor.class, value);
                 if (previousBrand == null) {
-                    return new BrandDescriptor(value);
+                    Descriptor desc = new BrandDescriptor(value);
+                    session.save(desc);
+                    return desc;
                 }
                 return previousBrand;
             case SUBTYPE:
-                SubtypeDescriptor previousSubtype = this.session.load(SubtypeDescriptor.class, value);
+                SubtypeDescriptor previousSubtype = session.load(SubtypeDescriptor.class, value);
                 if (previousSubtype == null) {
-                    return new SubtypeDescriptor(value);
+                    Descriptor desc = new SubtypeDescriptor(value);
+                    session.save(desc);
+                    return desc;
                 }
                 return previousSubtype;
             case FANCINESS:
-                FancinessDescriptor previousFancy = this.session.load(FancinessDescriptor.class, value);
+                FancinessDescriptor previousFancy = session.load(FancinessDescriptor.class, value);
                 if (previousFancy == null) {
-                    return new FancinessDescriptor(value);
+                    Descriptor desc = new FancinessDescriptor(value);
+                    session.save(desc);
+                    return desc;
                 }
                 return previousFancy;
             default:
