@@ -21,42 +21,38 @@ public class DescriptorFactory {
      * @return the Attribute.
      */
     public static Descriptor make(DescriptorTypes type, String value, Session session) {
+        Descriptor prev;
+        Descriptor desc = null;
         switch (type) {
             case COLOR:
                 // We should never have more than one
-                ColorDescriptor previous = session.load(ColorDescriptor.class, value);
-                if (previous == null) {
-                    Descriptor desc = new ColorDescriptor(value);
-                    session.save(desc);
-                    return desc;
-                }
-                return previous;
+                prev = session.load(ColorDescriptor.class, value);
+                if (prev == null)
+                    desc = new ColorDescriptor(value);
+                break;
             case BRAND:
-                BrandDescriptor previousBrand = session.load(BrandDescriptor.class, value);
-                if (previousBrand == null) {
-                    Descriptor desc = new BrandDescriptor(value);
-                    session.save(desc);
-                    return desc;
-                }
-                return previousBrand;
+                prev = session.load(BrandDescriptor.class, value);
+                if (prev == null)
+                    desc = new BrandDescriptor(value);
+                break;
             case SUBTYPE:
-                SubtypeDescriptor previousSubtype = session.load(SubtypeDescriptor.class, value);
-                if (previousSubtype == null) {
-                    Descriptor desc = new SubtypeDescriptor(value);
-                    session.save(desc);
-                    return desc;
-                }
-                return previousSubtype;
+                prev = session.load(SubtypeDescriptor.class, value);
+                if (prev == null)
+                    desc = new SubtypeDescriptor(value);
+                break;
             case FANCINESS:
-                FancinessDescriptor previousFancy = session.load(FancinessDescriptor.class, value);
-                if (previousFancy == null) {
-                    Descriptor desc = new FancinessDescriptor(value);
-                    session.save(desc);
-                    return desc;
-                }
-                return previousFancy;
+                prev = session.load(FancinessDescriptor.class, value);
+                if (prev == null)
+                    desc = new FancinessDescriptor(value);
+                break;
             default:
                 throw new IllegalArgumentException("This is not a valid type.");
+        }
+        if (prev != null) {
+            return prev;
+        } else {
+            session.save(desc);
+            return desc;
         }
     }
 }

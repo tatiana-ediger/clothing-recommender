@@ -1,6 +1,7 @@
 import domain.Clothing;
 import domain.ClothingType;
 import domain.Descriptor;
+import domain.Grouping;
 import org.neo4j.ogm.session.Session;
 
 import java.util.ArrayList;
@@ -25,11 +26,13 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
     }
 
     @Override
-    public void addToCatalog(ClothingType clothingType, String clothingName, List<Descriptor> attrs) {
+    public Long addToCatalog(ClothingType clothingType, String clothingName, List<Descriptor> descriptors, List<Grouping> groupings) {
         Session session = this.sessionFactory.getNeo4jSession();
         Clothing c = ClothingFactory.make(clothingType, clothingName);
-        c.addDescriptors(attrs);
+        c.addDescriptors(descriptors);
+        c.addGroupings(groupings);
         session.save(c);
+        return c.getId();
     }
 
     @Override

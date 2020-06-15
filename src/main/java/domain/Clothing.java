@@ -12,28 +12,32 @@ import java.util.Set;
 @NodeEntity
 public abstract class Clothing extends AEntity {
 
+    @Relationship(type = "CLOTHING_DESCRIPTOR", direction = Relationship.INCOMING)
+    private final Set<Descriptor> descriptors;
+    @Relationship(type = "CLOTHING_GROUPING", direction = Relationship.INCOMING)
+    private final Set<Grouping> groupings;
+    @Relationship(type = "USER_CLOTHING", direction = Relationship.INCOMING)
+    private final Set<User> users;
     @Property(name = "name")
     private String name;
 
-    @Relationship(type = "CLOTHING_DESCRIPTOR", direction = Relationship.INCOMING)
-    private Set<Descriptor> descriptors;
-
-    @Relationship(type = "CLOTHING_GROUPING", direction = Relationship.INCOMING)
-    private Set<Grouping> groupings;
-
-    @Relationship(type = "USER_CLOTHING", direction = Relationship.INCOMING)
-    private Set<User> users;
-
     public Clothing() {
+        this(new HashSet<>(), new HashSet<>(), new HashSet<>());
     }
 
     public Clothing(String name) {
-        this(name, new HashSet<>());
+        this(name, new HashSet<>(), new HashSet<>(), new HashSet<>());
     }
 
-    Clothing(String name, Set<Descriptor> descriptors) {
-        this.name = name;
+    Clothing(Set<Descriptor> descriptors, Set<Grouping> groupings, Set<User> users) {
         this.descriptors = descriptors;
+        this.groupings = groupings;
+        this.users = users;
+    }
+
+    Clothing(String name, Set<Descriptor> descriptors, Set<Grouping> groupings, Set<User> users) {
+        this(descriptors, groupings, users);
+        this.name = name;
     }
 
     @Override
@@ -44,8 +48,8 @@ public abstract class Clothing extends AEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (! (o instanceof Clothing)) return false;
-        if (! super.equals(o)) return false;
+        if (!(o instanceof Clothing)) return false;
+        if (!super.equals(o)) return false;
         Clothing clothing = (Clothing) o;
         return Objects.equals(this.getName(), clothing.getName()) &&
                 Objects.equals(this.getDescriptors(), clothing.getDescriptors()) &&

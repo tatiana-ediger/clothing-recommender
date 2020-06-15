@@ -1,6 +1,7 @@
 import domain.Clothing;
 import domain.ClothingType;
 import domain.Descriptor;
+import domain.Grouping;
 
 import java.util.List;
 
@@ -22,9 +23,11 @@ public interface ClothingRecommenderAPI {
      * The user enters the clothing item they like to wear with some of it's attributes.
      *
      * @param clothingName the name of the new clothing item
-     * @param attrs        the different attributes of the given piece of clothing
+     * @param descriptors  the different descriptors of the given piece of clothing
+     * @param groupings    the different groupings of the given piece of clothing
+     * @return
      */
-    void addToCatalog(ClothingType clothingType, String clothingName, List<Descriptor> attrs);
+    Long addToCatalog(ClothingType clothingType, String clothingName, List<Descriptor> descriptors, List<Grouping> groupings);
 
     /**
      * The user enters two items of clothing they like to wear together.
