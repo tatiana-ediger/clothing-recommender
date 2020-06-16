@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 public class ClothingRecommenderAPIIMplTest {
 
     @Container
-    private static final Neo4jContainer databaseServer = new Neo4jContainer();
+    private static final Neo4jContainer databaseServer = new Neo4jContainer().withoutAuthentication();
 
     static Neo4jSessionFactory sessionFactory;
     static ClothingRecommenderAPIIMpl api;
@@ -25,9 +25,12 @@ public class ClothingRecommenderAPIIMplTest {
 
     @BeforeAll
     static public void setUp() throws Exception {
+
+        databaseServer.withExposedPorts(7474, 7687);
+
         Configuration configuration = new Configuration.Builder()
                 .uri(databaseServer.getBoltUrl())
-                .credentials("neo4j", databaseServer.getAdminPassword())
+                //.credentials("neo4j", databaseServer.getAdminPassword())
                 .build();
 
 
@@ -37,6 +40,11 @@ public class ClothingRecommenderAPIIMplTest {
 
         session = sessionFactory.getNeo4jSession();
         session.purgeDatabase();
+
+        int mapped7474 = databaseServer.getMappedPort(7474);
+        System.out.println("Mapped port for Neo4j 7474: " + mapped7474);
+        int mapped7687 = databaseServer.getMappedPort(7687);
+        System.out.println("Mapped port for Neo4j 7687: " + mapped7687);
     }
 
     @AfterAll
@@ -311,13 +319,13 @@ public class ClothingRecommenderAPIIMplTest {
         user1.addToCloset(black_jeans);
         user1.addToCloset(green_tshirt);
         user1.addToCloset(blue_shorts);
-//        for (Clothing c : summer_collection.getClothings()) //Add every thing from summer
-//            user1.addToCloset(c);
-//        for (Clothing c : blue.getClothings()) //Add every thing that is blue
-//            user1.addToCloset(c);
-        session.save(user1);
+        for (Clothing c : summer_collection.getClothings()) //Add every thing from summer
+            user1.addToCloset(c);
+        for (Clothing c : blue.getClothings()) //Add every thing that is blue
+            user1.addToCloset(c);
+        session.save(user1, 2);
 
-        User user2 = new User("Emma");
+        User user2 = new User("Emma Watson");
         user2.addToCloset(black_fancy_suit_blazer);
         user2.addToCloset(red_skirt);
         user2.addToCloset(red_tshirt);
@@ -325,9 +333,9 @@ public class ClothingRecommenderAPIIMplTest {
         user2.addToCloset(brown_sandals);
         user2.addToCloset(fancy_white_blouse);
         user2.addToCloset(black_fancy_top);
-//        for (Clothing c : black.getClothings()) //Add every thing that is black
-//            user2.addToCloset(c);
-        session.save(user2);
+        for (Clothing c : black.getClothings()) //Add every thing that is black
+            user2.addToCloset(c);
+        session.save(user2, 2);
 
         User user3 = new User("Ashley");
         user3.addToCloset(black_fancy_suit_blazer);
@@ -339,9 +347,9 @@ public class ClothingRecommenderAPIIMplTest {
         user3.addToCloset(fancy_black_skirt);
         user3.addToCloset(black_fancy_top);
         user3.addToCloset(gray_sweater);
-//        for (Clothing c : black.getClothings()) //Add every thing that is black
-//            user3.addToCloset(c);
-        session.save(user3);
+        for (Clothing c : black.getClothings()) //Add every thing that is black
+            user3.addToCloset(c);
+        session.save(user3, 2);
 
         User user4 = new User("Charlotte");
         user4.addToCloset(gray_jeans);
@@ -353,7 +361,7 @@ public class ClothingRecommenderAPIIMplTest {
         user4.addToCloset(white_tshirt);
         user4.addToCloset(black_skirt);
         user4.addToCloset(red_heels);
-        session.save(user4);
+        session.save(user4, 2);
     }
 
     @AfterEach
@@ -399,7 +407,7 @@ public class ClothingRecommenderAPIIMplTest {
     @Test
     void recommendPurchaseTogether() {
         Clothing c = session.load(Clothing.class, (long) 14);
-        User u = session.load(User.class, (long) 65);
+        User u = session.load(User.class, (long) 66);
         List<Clothing> recommended = api.recommendPurchaseTogether(u.getId(), c);
         assertEquals(4, recommended.size());
     }

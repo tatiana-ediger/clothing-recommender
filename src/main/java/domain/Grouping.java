@@ -26,4 +26,8 @@ public abstract class Grouping {
     public Set<Clothing> getClothings() {
         return this.clothings;
     }
+
+    public void addClothing(Clothing clothing) {
+        this.clothings.add(clothing);
+    }
 }

@@ -64,18 +64,18 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
         // 3. Filter by not already in the user's closet
         query.append("WHERE NOT (in_groupings)<-[:Owns]-(user) \n");
 
-        query.append("RETURN user;");
+        query.append("RETURN in_groupings;");
 
         // TODO: maybe, sort?
 
 
-//        Iterable<Clothing> result = session.query(Clothing.class, query.toString(), params);
-        Iterable<User> user = session.query(User.class, query.toString(), params);
-//        for (Clothing c : result) {
-//            System.out.println(c.getName());
-//        }
+        Iterable<Clothing> result = session.query(Clothing.class, query.toString(), params);
+//        Iterable<User> user = session.query(User.class, query.toString(), params);
+        for (Clothing c : result) {
+            System.out.println(c.getName());
+        }
         List<Clothing> clothings = new ArrayList<>();
-//        result.forEach(clothings::add);
+        result.forEach(clothings::add);
 
         //2.2 that are not the same clothing type
         clothings = selected.filterOfDifferentType(clothings);

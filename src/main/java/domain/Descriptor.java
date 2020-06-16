@@ -41,4 +41,8 @@ public abstract class Descriptor {
     public Set<Clothing> getClothings() {
         return this.clothings; //TODO: abstract with grouping??
     }
+
+    public void addClothing(Clothing clothing) {
+        this.clothings.add(clothing);
+    }
 }

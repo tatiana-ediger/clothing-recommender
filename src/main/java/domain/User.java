@@ -10,11 +10,10 @@ import java.util.Set;
 @NodeEntity
 public class User extends AEntity {
 
-    @Property(name = "name")
-    private String name;
-
     @Relationship(type = "Owns", direction = Relationship.OUTGOING)
     private final Set<Clothing> closet; //Cloths + Set
+    @Property(name = "name")
+    private String name;
 
     public User() {
         this.closet = new HashSet<>();
@@ -37,5 +36,6 @@ public class User extends AEntity {
 
     public void addToCloset(Clothing clothing) {
         this.closet.add(clothing);
+        clothing.addUser(this);
     }
 }

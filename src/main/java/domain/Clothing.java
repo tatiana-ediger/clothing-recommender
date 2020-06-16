@@ -78,19 +78,21 @@ public abstract class Clothing extends AEntity {
     }
 
     public void addDescriptors(List<Descriptor> attrs) {
-        this.descriptors.addAll(attrs);
+        attrs.forEach(this::addDescriptor);
     }
 
     public void addDescriptor(Descriptor descriptor) {
         this.descriptors.add(descriptor);
+        descriptor.addClothing(this);
     }
 
     public void addGroupings(List<Grouping> attrs) {
-        this.groupings.addAll(attrs);
+        attrs.forEach(this::addGrouping);
     }
 
     public void addGrouping(Grouping grouping) {
         this.groupings.add(grouping);
+        grouping.addClothing(this);
     }
 
     public abstract ClothingType getType();
@@ -101,6 +103,10 @@ public abstract class Clothing extends AEntity {
 
     public List<Clothing> filterOfDifferentType(List<Clothing> clothings) {
         return clothings.stream().filter(clothing -> clothing.matchesType(this)).collect(Collectors.toList());
+    }
+
+    public void addUser(User user) {
+        this.users.add(user);
     }
 }
 
