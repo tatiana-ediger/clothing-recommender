@@ -397,7 +397,8 @@ public class ClothingRecommenderAPIIMplTest {
 
     @Test
     void recommendPurchaseTogether() {
-        Clothing c = session.load(Clothing.class, new Long(1));
-        api.recommendPurchaseTogether(1, c);
+        Clothing c = session.loadAll(Clothing.class).iterator().next();
+        List<Clothing> recommended = api.recommendPurchaseTogether(1, c);
+        assertEquals(9, recommended.size());
     }
 }

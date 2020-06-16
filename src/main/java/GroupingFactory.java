@@ -10,7 +10,7 @@ public class GroupingFactory {
         Grouping grouping = null;
         switch (type) {
             case COLLECTION:
-                prev = session.load(CollectionGrouping.class, value);
+                prev = session.load(CollectionGrouping.class, value); //TODO: test!!!
                 if (prev == null)
                     grouping = new CollectionGrouping(value);
                 break;

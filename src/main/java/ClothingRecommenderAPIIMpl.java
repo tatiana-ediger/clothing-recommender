@@ -48,14 +48,22 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
     public List<Clothing> recommendPurchaseTogether(long userID, Clothing selected) {
         Session session = this.sessionFactory.getNeo4jSession();
 
-        // 1. find the groupings of the selected clothing
-        // 2. Find all of the other clothigns in those groupings that are not the same clothingtype
+
         // 3. Filter by not already in the user's closet
         // TODO: maybe, sort?
 
         Map<String, Object> params = new HashMap<>();
+        StringBuilder query = new StringBuilder();
 
-        Iterable<Clothing> result = session.query(Clothing.class, "MATCH (n:Clothing) RETURN n;", params);
+        // 1. find the groupings of the selected clothings
+        // 2. Find all of the other clothings in those groupings
+        query.append("MATCH (c:Clothing {id:$cid})<-[:CLOTHING_GROUPING]-(groupings:Grouping)");
+        params.put("cid", selected.getId());
+        query.append("-[:CLOTHING_GROUPING]->(in_groupings:Clothing) \n");
+        query.append("RETURN in_groupings;");
+        //2.2 that are not the same clothingtype
+
+        Iterable<Clothing> result = session.query(Clothing.class, query.toString(), params);
         for (Clothing c : result) {
             System.out.println(c.getName());
         }

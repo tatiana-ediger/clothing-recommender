@@ -28,7 +28,7 @@ public interface ClothingRecommenderAPI {
 
     void addToUserCloset(User user, Clothing clothing);
 
-    void aadToUserCloset(Long id, Clothing Clothign);
+    void aadToUserCloset(Long id, Clothing clothing);
 
     /**
      * The user enters two items of clothing they like to wear together.
