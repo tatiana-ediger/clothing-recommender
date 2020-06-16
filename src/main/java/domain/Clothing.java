@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @NodeEntity
 public abstract class Clothing extends AEntity {
@@ -16,7 +17,7 @@ public abstract class Clothing extends AEntity {
     private final Set<Descriptor> descriptors;
     @Relationship(type = "CLOTHING_GROUPING", direction = Relationship.INCOMING)
     private final Set<Grouping> groupings;
-    @Relationship(type = "USER_CLOTHING", direction = Relationship.INCOMING)
+    @Relationship(type = "Owns", direction = Relationship.INCOMING)
     private final Set<User> users;
     @Property(name = "name")
     private String name;
@@ -42,7 +43,7 @@ public abstract class Clothing extends AEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), this.getName(), this.getDescriptors(), this.getUsers());
+        return super.hashCode();
     }
 
     @Override
@@ -90,6 +91,16 @@ public abstract class Clothing extends AEntity {
 
     public void addGrouping(Grouping grouping) {
         this.groupings.add(grouping);
+    }
+
+    public abstract ClothingType getType();
+
+    public boolean matchesType(Clothing other) {
+        return this.getType() == other.getType();
+    }
+
+    public List<Clothing> filterOfDifferentType(List<Clothing> clothings) {
+        return clothings.stream().filter(clothing -> clothing.matchesType(this)).collect(Collectors.toList());
     }
 }
 

@@ -48,27 +48,37 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
     public List<Clothing> recommendPurchaseTogether(long userID, Clothing selected) {
         Session session = this.sessionFactory.getNeo4jSession();
 
-
-        // 3. Filter by not already in the user's closet
-        // TODO: maybe, sort?
-
         Map<String, Object> params = new HashMap<>();
         StringBuilder query = new StringBuilder();
 
         // 1. find the groupings of the selected clothings
         // 2. Find all of the other clothings in those groupings
-        query.append("MATCH (c:Clothing {id:$cid})<-[:CLOTHING_GROUPING]-(groupings:Grouping)");
+        query.append("MATCH (selected:Clothing) WHERE ID(selected) = $cid \n");
         params.put("cid", selected.getId());
-        query.append("-[:CLOTHING_GROUPING]->(in_groupings:Clothing) \n");
-        query.append("RETURN in_groupings;");
-        //2.2 that are not the same clothingtype
 
-        Iterable<Clothing> result = session.query(Clothing.class, query.toString(), params);
-        for (Clothing c : result) {
-            System.out.println(c.getName());
-        }
+        query.append("MATCH (user:User) WHERE ID(user) = $userid \n");
+        params.put("userid", userID);
+
+        query.append("MATCH (selected)<-[:CLOTHING_GROUPING]-(groupings:Grouping)");
+        query.append("-[:CLOTHING_GROUPING]->(in_groupings:Clothing) \n");
+        // 3. Filter by not already in the user's closet
+        query.append("WHERE NOT (in_groupings)<-[:Owns]-(user) \n");
+
+        query.append("RETURN user;");
+
+        // TODO: maybe, sort?
+
+
+//        Iterable<Clothing> result = session.query(Clothing.class, query.toString(), params);
+        Iterable<User> user = session.query(User.class, query.toString(), params);
+//        for (Clothing c : result) {
+//            System.out.println(c.getName());
+//        }
         List<Clothing> clothings = new ArrayList<>();
-        result.forEach(clothings::add);
+//        result.forEach(clothings::add);
+
+        //2.2 that are not the same clothing type
+        clothings = selected.filterOfDifferentType(clothings);
         return clothings;
     }
 

@@ -30,6 +30,7 @@ public class ClothingRecommenderAPIIMplTest {
                 .credentials("neo4j", databaseServer.getAdminPassword())
                 .build();
 
+
         sessionFactory = new Neo4jSessionFactory(new SessionFactory(configuration, "domain"));
 
         api = new ClothingRecommenderAPIIMpl(sessionFactory);
@@ -310,10 +311,10 @@ public class ClothingRecommenderAPIIMplTest {
         user1.addToCloset(black_jeans);
         user1.addToCloset(green_tshirt);
         user1.addToCloset(blue_shorts);
-        for (Clothing c : summer_collection.getClothings()) //Add every thing from summer
-            user1.addToCloset(c);
-        for (Clothing c : blue.getClothings()) //Add every thing that is blue
-            user1.addToCloset(c);
+//        for (Clothing c : summer_collection.getClothings()) //Add every thing from summer
+//            user1.addToCloset(c);
+//        for (Clothing c : blue.getClothings()) //Add every thing that is blue
+//            user1.addToCloset(c);
         session.save(user1);
 
         User user2 = new User("Emma");
@@ -324,8 +325,8 @@ public class ClothingRecommenderAPIIMplTest {
         user2.addToCloset(brown_sandals);
         user2.addToCloset(fancy_white_blouse);
         user2.addToCloset(black_fancy_top);
-        for (Clothing c : black.getClothings()) //Add every thing that is black
-            user2.addToCloset(c);
+//        for (Clothing c : black.getClothings()) //Add every thing that is black
+//            user2.addToCloset(c);
         session.save(user2);
 
         User user3 = new User("Ashley");
@@ -338,8 +339,8 @@ public class ClothingRecommenderAPIIMplTest {
         user3.addToCloset(fancy_black_skirt);
         user3.addToCloset(black_fancy_top);
         user3.addToCloset(gray_sweater);
-        for (Clothing c : black.getClothings()) //Add every thing that is black
-            user3.addToCloset(c);
+//        for (Clothing c : black.getClothings()) //Add every thing that is black
+//            user3.addToCloset(c);
         session.save(user3);
 
         User user4 = new User("Charlotte");
@@ -397,8 +398,9 @@ public class ClothingRecommenderAPIIMplTest {
 
     @Test
     void recommendPurchaseTogether() {
-        Clothing c = session.loadAll(Clothing.class).iterator().next();
-        List<Clothing> recommended = api.recommendPurchaseTogether(1, c);
-        assertEquals(9, recommended.size());
+        Clothing c = session.load(Clothing.class, (long) 14);
+        User u = session.load(User.class, (long) 65);
+        List<Clothing> recommended = api.recommendPurchaseTogether(u.getId(), c);
+        assertEquals(4, recommended.size());
     }
 }

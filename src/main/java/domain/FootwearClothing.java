@@ -12,4 +12,9 @@ public class FootwearClothing extends Clothing {
     public FootwearClothing(String name) {
         super(name);
     }
+
+    @Override
+    public ClothingType getType() {
+        return ClothingType.FOOTWEAR;
+    }
 }

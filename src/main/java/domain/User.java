@@ -13,10 +13,11 @@ public class User extends AEntity {
     @Property(name = "name")
     private String name;
 
-    @Relationship(type = "USER_CLOTHING", direction = Relationship.OUTGOING)
-    private Set<Clothing> closet; //Cloths + Set
+    @Relationship(type = "Owns", direction = Relationship.OUTGOING)
+    private final Set<Clothing> closet; //Cloths + Set
 
     public User() {
+        this.closet = new HashSet<>();
     }
 
     public User(String name) {

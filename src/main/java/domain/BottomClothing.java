@@ -12,4 +12,9 @@ public class BottomClothing extends Clothing {
     public BottomClothing(String name) {
         super(name);
     }
+
+    @Override
+    public ClothingType getType() {
+        return ClothingType.BOTTOM;
+    }
 }
