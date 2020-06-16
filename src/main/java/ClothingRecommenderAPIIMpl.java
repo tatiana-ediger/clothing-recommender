@@ -18,11 +18,6 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
     }
 
     @Override
-    public void enterOutfit(long userID, List<Clothing> clothes) {
-        //TODO
-    }
-
-    @Override
     public Long addToCatalog(ClothingType clothingType, String clothingName, List<Descriptor> descriptors, List<Grouping> groupings) {
         Session session = this.sessionFactory.getNeo4jSession();
         Clothing c = ClothingFactory.make(clothingType, clothingName);
@@ -33,15 +28,34 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
     }
 
     @Override
-    public void enterUserPreference(long userID, Clothing c1, Clothing c2) {
-        //TODO
-    }
-
-    @Override
     public List<Clothing> recommendPurchase(long userID) {
         //Rank the number of connections each clothing
         Session session = this.sessionFactory.getNeo4jSession();
         return null; //TODO: implement
+    }
+
+    @Override
+    public List<Clothing> recommendSimilarItems(long userID, Clothing selected) {
+        Session session = this.sessionFactory.getNeo4jSession();
+
+        Map<String, Object> params = new HashMap<>();
+        StringBuilder query = new StringBuilder();
+
+        //1. find the descriptors of the selected Clothing
+        query.append("MATCH (c:Clothing {id:$cid})<-[:CLOTHING_DESCRIPTOR]-(descriptors:Descriptor)");
+        params.put("cid", selected.getId());
+        query.append("-[:CLOTHING_DESCRIPTOR]->(in_descriptions:Clothing) \n");
+        query.append("RETURN in_descriptions;");
+
+        //2. Find all the other clothing that also have these descriptors
+        //3. Filter out the clothing items that are already in the user's closet
+        Iterable<Clothing> result = session.query(Clothing.class, query.toString(), params);
+        for (Clothing c : result) {
+            System.out.println(c.getName());
+        }
+        List<Clothing> clothings = new ArrayList<>();
+        result.forEach(clothings::add);
+        return clothings;
     }
 
     @Override
@@ -91,7 +105,7 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
     }
 
     @Override
-    public void aadToUserCloset(Long id, Clothing clothing) {
+    public void addToUserCloset(Long id, Clothing clothing) {
         Session session = this.sessionFactory.getNeo4jSession();
         User user = session.load(User.class, id);
         this.addToUserCloset(user, clothing);
