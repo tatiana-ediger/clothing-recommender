@@ -23,12 +23,18 @@ public class User extends AEntity {
         this(name, new HashSet<>());
     }
 
+    public User(String name, Long id) {
+        super(id);
+        this.name = name;
+        this.closet = new HashSet<>();
+    }
+
     User(String name, Set<Clothing> closet) {
         this.name = name;
         this.closet = closet;
     }
 
-    void addToCloset(Clothing clothing) {
+    public void addToCloset(Clothing clothing) {
         this.closet.add(clothing);
     }
 }

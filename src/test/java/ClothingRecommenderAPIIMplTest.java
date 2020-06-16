@@ -111,6 +111,7 @@ public class ClothingRecommenderAPIIMplTest {
         black_jeans.addDescriptor(black);
         black_jeans.addGrouping(summer_collection);
         black_jeans.addGrouping(casual_black_set);
+        black_jeans.addGrouping(blm_collection);
         session.save(black_jeans);
 
         Clothing khaki_slacks = ClothingFactory.make(ClothingType.BOTTOM, "Khaki Slacks");
@@ -145,6 +146,7 @@ public class ClothingRecommenderAPIIMplTest {
         black_skirt.addDescriptor(casual);
         black_skirt.addGrouping(summer_collection);
         black_skirt.addGrouping(casual_black_set);
+        black_skirt.addGrouping(blm_collection);
         session.save(black_skirt);
 
         Clothing fancy_black_skirt = ClothingFactory.make(ClothingType.BOTTOM, "Fancy Black Skirt");
@@ -158,7 +160,6 @@ public class ClothingRecommenderAPIIMplTest {
         //query.append("CREATE (reddress:Clothing:Bottom:Top { name: 'reddress' })\n");
         //        reddress.addDescriptor(red);
 
-
         Clothing white_buttonup = ClothingFactory.make(ClothingType.TOP, "White Buttonup");
         white_buttonup.addDescriptor(fancy);
         white_buttonup.addDescriptor(white);
@@ -171,6 +172,7 @@ public class ClothingRecommenderAPIIMplTest {
         black_tshirt.addDescriptor(t_shirt);
         black_tshirt.addDescriptor(casual);
         black_tshirt.addGrouping(summer_collection);
+        black_tshirt.addGrouping(blm_collection);
         session.save(black_tshirt);
 
         Clothing red_tshirt = ClothingFactory.make(ClothingType.TOP, "Red Tshirt");
@@ -240,6 +242,7 @@ public class ClothingRecommenderAPIIMplTest {
         black_sneakers.addDescriptor(black);
         black_sneakers.addDescriptor(casual);
         black_sneakers.addDescriptor(nike);
+        black_sneakers.addGrouping(blm_collection);
         session.save(black_sneakers);
 
         Clothing black_dress_shoes = ClothingFactory.make(ClothingType.FOOTWEAR, "Black Dress Shoes");
@@ -258,6 +261,7 @@ public class ClothingRecommenderAPIIMplTest {
         Clothing black_vans = ClothingFactory.make(ClothingType.FOOTWEAR, "Black Vans");
         black_vans.addDescriptor(black);
         black_vans.addDescriptor(vans);
+        black_vans.addGrouping(blm_collection);
         session.save(black_vans);
 
         Clothing black_heels = ClothingFactory.make(ClothingType.FOOTWEAR, "Black Heels");
@@ -290,6 +294,65 @@ public class ClothingRecommenderAPIIMplTest {
         black_fancy_suit_blazer.addGrouping(winter_collection);
         black_fancy_suit_blazer.addGrouping(fancy_wedding_suit_set);
         session.save(black_fancy_suit_blazer);
+
+        Clothing red_heels = ClothingFactory.make(ClothingType.FOOTWEAR, "Red Heels");
+        red_heels.addDescriptor(red);
+        red_heels.addDescriptor(fancy);
+        red_heels.addDescriptor(casual);
+        red_heels.addDescriptor(heels);
+        red_heels.addGrouping(blm_collection);
+        red_heels.addGrouping(summer_collection);
+        session.save(red_heels);
+
+        User user1 = new User("Pablo");
+        user1.addToCloset(black_fancy_suit_blazer);
+        user1.addToCloset(black_fancy_suit_trousers);
+        user1.addToCloset(black_jeans);
+        user1.addToCloset(green_tshirt);
+        user1.addToCloset(blue_shorts);
+        for (Clothing c : summer_collection.getClothings()) //Add every thing from summer
+            user1.addToCloset(c);
+        for (Clothing c : blue.getClothings()) //Add every thing that is blue
+            user1.addToCloset(c);
+        session.save(user1);
+
+        User user2 = new User("Emma");
+        user2.addToCloset(black_fancy_suit_blazer);
+        user2.addToCloset(red_skirt);
+        user2.addToCloset(red_tshirt);
+        user2.addToCloset(black_heels);
+        user2.addToCloset(brown_sandals);
+        user2.addToCloset(fancy_white_blouse);
+        user2.addToCloset(black_fancy_top);
+        for (Clothing c : black.getClothings()) //Add every thing that is black
+            user2.addToCloset(c);
+        session.save(user2);
+
+        User user3 = new User("Ashley");
+        user3.addToCloset(black_fancy_suit_blazer);
+        user3.addToCloset(red_skirt);
+        user3.addToCloset(red_tshirt);
+        user3.addToCloset(black_heels);
+        user3.addToCloset(brown_sandals);
+        user3.addToCloset(fancy_white_blouse);
+        user3.addToCloset(fancy_black_skirt);
+        user3.addToCloset(black_fancy_top);
+        user3.addToCloset(gray_sweater);
+        for (Clothing c : black.getClothings()) //Add every thing that is black
+            user3.addToCloset(c);
+        session.save(user3);
+
+        User user4 = new User("Charlotte");
+        user4.addToCloset(gray_jeans);
+        user4.addToCloset(gray_sweater);
+        user4.addToCloset(green_tshirt);
+        user4.addToCloset(white_blouse);
+        user4.addToCloset(white_buttonup);
+        user4.addToCloset(white_vans);
+        user4.addToCloset(white_tshirt);
+        user4.addToCloset(black_skirt);
+        user4.addToCloset(red_heels);
+        session.save(user4);
     }
 
     @AfterEach
@@ -297,11 +360,6 @@ public class ClothingRecommenderAPIIMplTest {
         session.purgeDatabase();
         session.clear();
     }
-
-//    @Test
-//    public void testEnterOutfit() {
-//        //TODO: test
-//    }
 
     @Test
     public void testEnterClothingItem() {
@@ -342,16 +400,4 @@ public class ClothingRecommenderAPIIMplTest {
         Clothing c = session.load(Clothing.class, new Long(1));
         api.recommendPurchaseTogether(1, c);
     }
-
-//    @Test
-//    public void testEnterUserPreference() {
-//    }
-//
-//    @Test
-//    public void testRecommendOutfit1() {
-//    }
-//
-//    @Test
-//    public void testRecommendOutfit2() {
-//    }
 }

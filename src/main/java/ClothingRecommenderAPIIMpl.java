@@ -1,7 +1,4 @@
-import domain.Clothing;
-import domain.ClothingType;
-import domain.Descriptor;
-import domain.Grouping;
+import domain.*;
 import org.neo4j.ogm.session.Session;
 
 import java.util.ArrayList;
@@ -65,5 +62,20 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
         List<Clothing> clothings = new ArrayList<>();
         result.forEach(clothings::add);
         return clothings;
+    }
+
+    @Override
+    public void addToUserCloset(User user, Clothing clothing) {
+        Session session = this.sessionFactory.getNeo4jSession();
+        user.addToCloset(clothing);
+        session.save(user);
+        user.getId();
+    }
+
+    @Override
+    public void aadToUserCloset(Long id, Clothing clothing) {
+        Session session = this.sessionFactory.getNeo4jSession();
+        User user = session.load(User.class, id);
+        this.addToUserCloset(user, clothing);
     }
 }

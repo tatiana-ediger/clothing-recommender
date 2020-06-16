@@ -33,8 +33,12 @@ public abstract class Descriptor {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (! (o instanceof Descriptor)) return false;
+        if (!(o instanceof Descriptor)) return false;
         Descriptor that = (Descriptor) o;
         return this.value.equals(that.value);
+    }
+
+    public Set<Clothing> getClothings() {
+        return this.clothings; //TODO: abstract with grouping??
     }
 }
