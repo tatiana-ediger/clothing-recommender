@@ -7,7 +7,6 @@ import java.util.Objects;
 
 public abstract class AEntity {
 
-    @Id
     @GeneratedValue
     private Long id;
 

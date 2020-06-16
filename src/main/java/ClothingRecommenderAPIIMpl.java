@@ -18,13 +18,25 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
     }
 
     @Override
-    public Long addToCatalog(ClothingType clothingType, String clothingName, List<Descriptor> descriptors, List<Grouping> groupings) {
+    public Long addToCatalog(ClothingType clothingType, String catalogID, String clothingName, List<Descriptor> descriptors, List<Grouping> groupings) {
         Session session = this.sessionFactory.getNeo4jSession();
-        Clothing c = ClothingFactory.make(clothingType, clothingName);
+        Clothing c = ClothingFactory.make(clothingType, catalogID, clothingName);
         c.addDescriptors(descriptors);
         c.addGroupings(groupings);
         session.save(c);
         return c.getId();
+    }
+
+    @Override
+    public Clothing loadClothingByID(String catalogID) {
+        Session session = this.sessionFactory.getNeo4jSession();
+        Clothing c = session.load(Clothing.class, catalogID);
+        return c;
+    }
+
+    @Override
+    public User loadUserByID(String userID) {
+        return null;
     }
 
     @Override
@@ -44,10 +56,16 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
         //1. find the descriptors of the selected Clothing
         query.append("MATCH (c:Clothing {id:$cid})<-[:CLOTHING_DESCRIPTOR]-(descriptors:Descriptor)");
         params.put("cid", selected.getId());
-        query.append("-[:CLOTHING_DESCRIPTOR]->(in_descriptions:Clothing) \n");
-        query.append("RETURN in_descriptions;");
+        query.append("-[descriptions:CLOTHING_DESCRIPTOR]->(in_descriptions:Clothing) \n");
+
+        query.append("MATCH (user:User) WHERE ID(user) = $userid \n");
+        params.put("userid", userID);
 
         //2. Find all the other clothing that also have these descriptors
+        query.append("WHERE NOT (in_descriptions)<-[:Owns]-(user) \n");
+        query.append("RETURN in_descriptions;");
+        //query.append("ORDER BY count(descriptions);");
+
         //3. Filter out the clothing items that are already in the user's closet
         Iterable<Clothing> result = session.query(Clothing.class, query.toString(), params);
         for (Clothing c : result) {
@@ -55,11 +73,13 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
         }
         List<Clothing> clothings = new ArrayList<>();
         result.forEach(clothings::add);
+
+        clothings = selected.filterOfDifferentType(clothings);
         return clothings;
     }
 
     @Override
-    public List<Clothing> recommendPurchaseTogether(long userID, Clothing selected) {
+    public List<Clothing> recommendRelatedItems(long userID, Clothing selected) {
         Session session = this.sessionFactory.getNeo4jSession();
 
         Map<String, Object> params = new HashMap<>();

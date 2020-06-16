@@ -9,8 +9,8 @@ public class FootwearClothing extends Clothing {
 
     }
 
-    public FootwearClothing(String name) {
-        super(name);
+    public FootwearClothing(String catalogID, String name) {
+        super(catalogID, name);
     }
 
     @Override

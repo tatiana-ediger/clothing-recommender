@@ -17,8 +17,22 @@ public interface ClothingRecommenderAPI {
      * @param groupings    the different groupings of the given piece of clothing
      * @return
      */
-    Long addToCatalog(ClothingType clothingType, String clothingName, List<Descriptor> descriptors,
+    Long addToCatalog(ClothingType clothingType, String catalogID, String clothingName, List<Descriptor> descriptors,
                       List<Grouping> groupings);
+
+    /**
+     * Loads the Clothing item with the corresponding catalogID.
+     * @param catalogID the desired clothing item's catalog ID.
+     * @return the Clothing item.
+     */
+    Clothing loadClothingByID(String catalogID);
+
+    /**
+     *
+     * @param userID
+     * @return
+     */
+    User loadUserByID(String userID);
 
     /**
      * Adds clothing to a user's closet when you have access to the whole user.
@@ -62,5 +76,5 @@ public interface ClothingRecommenderAPI {
      * @param selected the given piece of clothing.
      * @return the list of recommended clothing.
      */
-    List<Clothing> recommendPurchaseTogether(long userID, Clothing selected);
+    List<Clothing> recommendRelatedItems(long userID, Clothing selected);
 }
