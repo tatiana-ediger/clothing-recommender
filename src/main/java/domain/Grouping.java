@@ -22,4 +22,8 @@ public abstract class Grouping {
         this.value = value;
         this.clothings = new HashSet<>();
     }
+
+    public Set<Clothing> getClothings() {
+        return this.clothings;
+    }
 }
