@@ -29,4 +29,21 @@ public class GroupingFactory {
             return grouping;
         }
     }
+
+    public static Grouping make(GroupingType type, String value) {
+        Grouping prev;
+        Grouping grouping = null;
+        switch (type) {
+            case COLLECTION:
+                return new CollectionGrouping(value);
+            case SET:
+                return new SetGrouping(value);
+            default:
+                throw new IllegalArgumentException("Grouping type not found");
+        }
+    }
+
+    public static Grouping make(String type, String value) {
+        return make(GroupingType.valueOf(type), value);
+    }
 }

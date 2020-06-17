@@ -8,8 +8,6 @@ import java.util.List;
  */
 public interface ClothingRecommenderAPI {
 
-    //TODO: Conduct Neo4J queries
-
     /**
      * The user enters the clothing item they like to wear with some of it's attributes.
      *
@@ -34,9 +32,13 @@ public interface ClothingRecommenderAPI {
      */
     User loadUserByUsername(String userID);
 
-    Descriptor loadDescriptor(String type);
+    Descriptor loadDescriptor(String value);
 
-    Grouping loadGrouping(String type);
+    Descriptor loadDescriptor(String descriptorType, String value);
+
+    Grouping loadGrouping(String value);
+
+    Grouping loadGrouping(String groupingType, String value);
 
     /**
      * Adds clothing to a user's closet when you have access to the whole user.
@@ -49,10 +51,10 @@ public interface ClothingRecommenderAPI {
     /**
      * Adds clothing to a user's closet when you have access to only a user ID.
      *
-     * @param id       the given User's ID.
+     * @param username the given User's username.
      * @param clothing the given Clothing to be added to their closet.
      */
-    void addToUserCloset(Long id, Clothing clothing);
+    void addToUserCloset(String username, Clothing clothing);
 
     /**
      * Recommends what a user should by considering other users with similar clothing/tastes.
@@ -60,7 +62,7 @@ public interface ClothingRecommenderAPI {
      * @param userID the id of the User who we are trying to recommend clothing to.
      * @return a list of recommended clothing.
      */
-    Collection<Clothing> recommendPurchase(long userID);
+    Collection<Clothing> recommendPurchase(String userID);
 
     /**
      * Given a clothing item the user wants to purchase, also recommends other clothing items that share
@@ -107,4 +109,6 @@ public interface ClothingRecommenderAPI {
     Collection<CollectionGrouping> listCollectionGroupings();
 
     Collection<SetGrouping> listSetGroupings();
+
+    void addToGrouping(String catalogID, Grouping grouping);
 }

@@ -5,9 +5,9 @@
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
         </encoder>
     </appender>
-    <logger name="org.neo4j.ogm" level="INFO"/>
-    <logger name="org.testcontainers" level="ERROR"/>
-    <logger name="com.github.dockerjava" level="ERROR"/>
+    <logger name="org.neo4j.ogm" level="error"/>
+    <logger name="org.testcontainers" level="error"/>
+    <logger name="com.github.dockerjava" level="error"/>
     <root level="info">
         <appender-ref ref="STDOUT"/>
     </root>

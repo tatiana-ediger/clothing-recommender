@@ -35,19 +35,31 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
     }
 
     @Override
-    public Descriptor loadDescriptor(String type) {
+    public Descriptor loadDescriptor(String value) {
         Session session = this.sessionFactory.getNeo4jSession();
-        return session.load(Descriptor.class, type);
+        return session.load(Descriptor.class, value);
     }
 
     @Override
-    public Grouping loadGrouping(String type) {
+    public Descriptor loadDescriptor(String descriptorType, String value) {
         Session session = this.sessionFactory.getNeo4jSession();
-        return session.load(Grouping.class, type);
+        return session.load(Descriptor.class, value); //TODO: check sub classes
     }
 
     @Override
-    public List<Clothing> recommendPurchase(long userID) {
+    public Grouping loadGrouping(String value) {
+        Session session = this.sessionFactory.getNeo4jSession();
+        return session.load(Grouping.class, value);
+    }
+
+    @Override
+    public Grouping loadGrouping(String groupingType, String value) {
+        Session session = this.sessionFactory.getNeo4jSession();
+        return session.load(Grouping.class, value); //TODO: check collection/set
+    }
+
+    @Override
+    public List<Clothing> recommendPurchase(String userID) {
         //Rank the number of connections each clothing
         Session session = this.sessionFactory.getNeo4jSession();
         return null; //TODO: implement
@@ -191,6 +203,14 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
     }
 
     @Override
+    public void addToGrouping(String catalogID, Grouping grouping) {
+        Session session = this.sessionFactory.getNeo4jSession();
+        Clothing c = session.load(Clothing.class, catalogID);
+        c.addGrouping(grouping);
+        session.save(c);
+    }
+
+    @Override
     public void addToUserCloset(User user, Clothing clothing) {
         Session session = this.sessionFactory.getNeo4jSession();
         user.addToCloset(clothing);
@@ -198,9 +218,9 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
     }
 
     @Override
-    public void addToUserCloset(Long id, Clothing clothing) {
+    public void addToUserCloset(String username, Clothing clothing) {
         Session session = this.sessionFactory.getNeo4jSession();
-        User user = session.load(User.class, id);
+        User user = session.load(User.class, username);
         this.addToUserCloset(user, clothing);
     }
 }

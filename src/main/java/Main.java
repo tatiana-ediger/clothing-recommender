@@ -1,6 +1,9 @@
 import domain.*;
 import org.neo4j.ogm.session.Session;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Main {
 
     private static Session session;
@@ -9,8 +12,6 @@ public class Main {
     public static void main(String[] args) {
         session = Neo4jSessionFactory.getInstance().getNeo4jSession();
         api = new ClothingRecommenderAPIIMpl(Neo4jSessionFactory.getInstance());
-
-        fillupDatabase();
 
         switch (actionArgument(args)) {
             case "list":
@@ -29,13 +30,16 @@ public class Main {
                 groupedByActions(args);
                 break;
             case "add-clothing":
-                //TODO: add clothing
+                addClothingAction(args);
                 break;
             case "add-to-closet":
-                //TODO: add to closet
+                addToClosetAction(args);
+                break;
+            case "add-to-grouping":
+                addToGroupingAction(args);
                 break;
             case "recommend-purchase-related":
-                //TODO: recommend related
+                recommendPurchaseRelatedAction(args);
                 break;
             case "recommend-purchase-similar":
                 //TODO: recommend similar
@@ -52,6 +56,8 @@ public class Main {
             case "recommend-war":
                 //TODO: recommend wear
                 break;
+            case "filldb":
+                fillupDatabase();
             default:
                 System.out.println("We need a first action argument.");
                 System.out.println("[list, closet, describe-clothing]");
@@ -60,6 +66,36 @@ public class Main {
         }
 
         System.exit(0);
+    }
+
+    private static void recommendPurchaseRelatedAction(String[] args) {
+
+    }
+
+    private static void addClothingAction(String[] args) {
+        String type = getArgumentN(args, 1);
+        String name = getArgumentN(args, 2);
+        String catalogID = getArgumentN(args, 3);
+        List<Descriptor> descriptors = new ArrayList<>();
+        for (int i = 4; i < args.length; ) {
+            descriptors.add(DescriptorFactory.make(getArgumentN(args, i++), getArgumentN(args, i++)));
+        }
+        api.addToCatalog(ClothingType.valueOf(type), name, catalogID, descriptors, new ArrayList<>());
+    }
+
+    private static void addToGroupingAction(String[] args) {
+        String catalogID = getArgumentN(args, 1);
+        String groupingType = getArgumentN(args, 2);
+        String groupingName = getArgumentN(args, 3);
+        Grouping grouping = GroupingFactory.make(groupingType, groupingName);
+        api.addToGrouping(catalogID, grouping);
+    }
+
+    private static void addToClosetAction(String[] args) {
+        String username = getArgumentN(args, 1);
+        String catalogID = getArgumentN(args, 2);
+        Clothing c = api.loadClothingByCatalogID(catalogID);
+        api.addToUserCloset(username, c);
     }
 
     private static void fillupDatabase() {
@@ -418,23 +454,25 @@ public class Main {
 
     private static void describedByActions(String[] args) {
         String type = getArgumentN(args, 1);
-        Descriptor desc = api.loadDescriptor(type);
+        String name = getArgumentN(args, 2);
+        Descriptor desc = api.loadDescriptor(type, name);
         printList(String.format("All clothings that are %s:", desc.getName()),
                 desc.getClothings(), true, true);
     }
 
     private static void groupedByActions(String[] args) {
         String type = getArgumentN(args, 1);
-        Grouping group = api.loadGrouping(type);
+        String name = getArgumentN(args, 2);
+        Grouping group = api.loadGrouping(type, name);
         printList(String.format("All clothings that are in %s:", group.getName()),
                 group.getClothings(), true, true);
     }
 
     private static void describeClothingAction(String[] args) {
-        String cid = getArgumentN(args, 2);
+        String cid = getArgumentN(args, 1);
         Clothing c = api.loadClothingByCatalogID(cid);
         StringBuilder s = new StringBuilder();
-        System.out.println(String.format("The clothing %s (%s) is a %s",
+        System.out.println(String.format("The clothing %s (%s) is a %s\n\n",
                 c.getName(), c.getCatalogId(), c.getType().name()));
         printList("\tdescribed as: ",
                 c.getDescriptors(), false, false);
@@ -443,7 +481,7 @@ public class Main {
     }
 
     private static void closetAction(String[] args) {
-        String username = getArgumentN(args, 2);
+        String username = getArgumentN(args, 1);
         User u = api.loadUserByUsername(username);
         printList(String.format("The closet for %s (%s): ", u.getName(), u.getUsername()),
                 u.getCloset(), true, true);
