@@ -62,13 +62,10 @@ public interface ClothingRecommenderAPI {
      * @param userID the id of the User who we are trying to recommend clothing to.
      * @return a list of recommended clothing.
      */
-<<<<<<< Updated upstream
     Collection<Clothing> recommendPurchase(String userID);
 
     void addUser(String username, String name);
-=======
-    List<Clothing> recommendPurchase(String userID);
->>>>>>> Stashed changes
+
 
     /**
      * Given a clothing item the user wants to purchase, also recommends other clothing items that share
