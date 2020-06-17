@@ -2,6 +2,7 @@ import domain.*;
 import org.neo4j.ogm.session.Session;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class Main {
@@ -42,18 +43,27 @@ public class Main {
                 recommendPurchaseRelatedAction(args);
                 break;
             case "recommend-purchase-similar":
-                //TODO: recommend similar
+                recommendPurchaseSimilarAction(args);
                 break;
             case "recommend-purchase":
+                System.out.println("Not yet implemented");
+                System.exit(1);
                 //TODO: recommend
                 break;
             case "recommend-wear-related":
+                System.out.println("Not yet implemented");
+                System.exit(1);
                 //TODO: recommend wear related
                 break;
             case "recommend-wear-similar":
+
+                System.out.println("Not yet implemented");
+                System.exit(1);
                 //TODO: recommend wear similar
                 break;
-            case "recommend-war":
+            case "recommend-wear":
+                System.out.println("Not yet implemented");
+                System.exit(1);
                 //TODO: recommend wear
                 break;
             case "filldb":
@@ -64,12 +74,28 @@ public class Main {
                 System.exit(1);
                 break;
         }
-
+        System.out.println("Done!");
         System.exit(0);
     }
 
     private static void recommendPurchaseRelatedAction(String[] args) {
+        String username = getArgumentN(args, 1);
+        String catalogID = getArgumentN(args, 2);
+        Clothing c = api.loadClothingByCatalogID(catalogID);
+        User u = api.loadUserByUsername(username);
+        Collection<Clothing> recommended = api.recommendRelatedItems(username, c);
+        printList(String.format("Recommending clothes for %s (%s) based on items related to %s:",
+                u.getName(), u.getUsername(), c.getName()), recommended, true, true);
+    }
 
+    private static void recommendPurchaseSimilarAction(String[] args) {
+        String username = getArgumentN(args, 1);
+        String catalogID = getArgumentN(args, 2);
+        Clothing c = api.loadClothingByCatalogID(catalogID);
+        User u = api.loadUserByUsername(username);
+        Collection<Clothing> recommended = api.recommendSimilarItems(username, c);
+        printList(String.format("Recommending clothes for %s (%s) based on items similar to %s:",
+                u.getName(), u.getUsername(), c.getName()), recommended, true, true);
     }
 
     private static void addClothingAction(String[] args) {
@@ -80,7 +106,7 @@ public class Main {
         for (int i = 4; i < args.length; ) {
             descriptors.add(DescriptorFactory.make(getArgumentN(args, i++), getArgumentN(args, i++)));
         }
-        api.addToCatalog(ClothingType.valueOf(type), name, catalogID, descriptors, new ArrayList<>());
+        api.addToCatalog(ClothingType.valueOf(type), catalogID, name, descriptors, new ArrayList<>());
     }
 
     private static void addToGroupingAction(String[] args) {
