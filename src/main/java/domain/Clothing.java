@@ -1,6 +1,7 @@
 package domain;
 
 import org.neo4j.ogm.annotation.*;
+import org.neo4j.ogm.session.Session;
 
 import java.util.HashSet;
 import java.util.List;
@@ -8,14 +9,14 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@NodeEntity
+@NodeEntity()
 public abstract class Clothing extends AEntity {
 
     @Relationship(type = "CLOTHING_DESCRIPTOR", direction = Relationship.INCOMING)
     protected final Set<Descriptor> descriptors;
     @Relationship(type = "CLOTHING_GROUPING", direction = Relationship.INCOMING)
     protected final Set<Grouping> groupings;
-    @Relationship(type = "Owns", direction = Relationship.INCOMING)
+    @Relationship(type = "OWNS", direction = Relationship.INCOMING)
     protected final Set<User> users;
 
     @Index(unique = true)
@@ -83,6 +84,12 @@ public abstract class Clothing extends AEntity {
 
     public Set<User> getUsers() {
         return this.users;
+    }
+
+    public Set<User> getUsers(Session session) {
+        this.users.clear();
+        this.users.addAll(session.loadAll(User.class, 1));
+        return this.getUsers();
     }
 
     public Set<Grouping> getGroupings() {

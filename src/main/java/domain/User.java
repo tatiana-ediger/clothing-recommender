@@ -8,7 +8,7 @@ import java.util.Set;
 @NodeEntity
 public class User extends AEntity {
 
-    @Relationship(type = "Owns", direction = Relationship.OUTGOING)
+    @Relationship(type = "OWNS", direction = Relationship.OUTGOING)
     private final Set<Clothing> closet; //Cloths + Set
 
     @Index(unique = true)

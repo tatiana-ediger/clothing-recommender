@@ -122,7 +122,7 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
 
     private <T> Collection<T> listByLabel(Class<T> t) {
         Session session = this.sessionFactory.getNeo4jSession();
-        return session.loadAll(t);
+        return session.loadAll(t, 3);
     }
 
     @Override

@@ -1,10 +1,6 @@
 import domain.*;
 import org.neo4j.ogm.session.Session;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
 public class Main {
 
     private static Session session;
@@ -13,6 +9,8 @@ public class Main {
     public static void main(String[] args) {
         session = Neo4jSessionFactory.getInstance().getNeo4jSession();
         api = new ClothingRecommenderAPIIMpl(Neo4jSessionFactory.getInstance());
+
+        fillupDatabase();
 
         switch (actionArgument(args)) {
             case "list":
@@ -60,11 +58,14 @@ public class Main {
                 System.exit(1);
                 break;
         }
+
+        System.exit(0);
     }
 
     private static void fillupDatabase() {
         session.clear();
         session.purgeDatabase();
+        session.clear();
         Descriptor jeans = DescriptorFactory.make(DescriptorType.SUBTYPE, "jeans", session);
         Descriptor slacks = DescriptorFactory.make(DescriptorType.SUBTYPE, "slacks", session);
         Descriptor shorts = DescriptorFactory.make(DescriptorType.SUBTYPE, "shorts", session);
@@ -357,7 +358,7 @@ public class Main {
             user1.addToCloset(c);
         for (Clothing c : blue.getClothings()) //Add every thing that is blue
             user1.addToCloset(c);
-        session.save(user1, 2);
+        session.save(user1);
 
         User user2 = new User("hermione", "Emma Watson");
         user2.addToCloset(black_fancy_suit_blazer);
@@ -369,7 +370,7 @@ public class Main {
         user2.addToCloset(black_fancy_top);
         for (Clothing c : black.getClothings()) //Add every thing that is black
             user2.addToCloset(c);
-        session.save(user2, 2);
+        session.save(user2);
 
         User user3 = new User("ash", "Ashley");
         user3.addToCloset(black_fancy_suit_blazer);
@@ -383,7 +384,7 @@ public class Main {
         user3.addToCloset(gray_sweater);
         for (Clothing c : black.getClothings()) //Add every thing that is black
             user3.addToCloset(c);
-        session.save(user3, 2);
+        session.save(user3);
 
         User user4 = new User("char", "Charlotte");
         user4.addToCloset(gray_jeans);
@@ -395,16 +396,16 @@ public class Main {
         user4.addToCloset(white_tshirt);
         user4.addToCloset(black_skirt);
         user4.addToCloset(red_heels);
-        session.save(user4, 2);
+        session.save(user4);
     }
 
-    private static void printList(String title, Collection<Object> list, boolean div, boolean multiline) {
+    private static void printList(String title, Iterable<?> list, boolean div, boolean multiline) {
         StringBuilder s = new StringBuilder();
         s.append(title);
         if (multiline)
             s.append("\n");
         for (Object o : list) {
-            s.append((multiline) ? "\n" : " ");
+            s.append((multiline) ? "\t" : " ");
             s.append(o.toString());
             if (multiline)
                 s.append("\n");
@@ -419,14 +420,14 @@ public class Main {
         String type = getArgumentN(args, 1);
         Descriptor desc = api.loadDescriptor(type);
         printList(String.format("All clothings that are %s:", desc.getName()),
-                Collections.singleton(desc.getClothings()), true, true);
+                desc.getClothings(), true, true);
     }
 
     private static void groupedByActions(String[] args) {
         String type = getArgumentN(args, 1);
         Grouping group = api.loadGrouping(type);
         printList(String.format("All clothings that are in %s:", group.getName()),
-                Collections.singleton(group.getClothings()), true, true);
+                group.getClothings(), true, true);
     }
 
     private static void describeClothingAction(String[] args) {
@@ -436,58 +437,58 @@ public class Main {
         System.out.println(String.format("The clothing %s (%s) is a %s",
                 c.getName(), c.getCatalogId(), c.getType().name()));
         printList("\tdescribed as: ",
-                Collections.singleton(c.getDescriptors()), false, false);
+                c.getDescriptors(), false, false);
         printList("\n\tgrouped as:",
-                Collections.singleton(c.getGroupings()), false, false);
+                c.getGroupings(), false, false);
     }
 
     private static void closetAction(String[] args) {
         String username = getArgumentN(args, 2);
         User u = api.loadUserByUsername(username);
         printList(String.format("The closet for %s (%s): ", u.getName(), u.getUsername()),
-                List.of(u.getCloset()), true, true);
+                u.getCloset(), true, true);
     }
 
     private static void listAction(String[] args) {
         switch (listCategoryArgument(args)) {
             case "clothings":
-                printList("All clothings: ", Collections.singleton(api.listClothings()), true, true);
+                printList("All clothings: ", api.listClothings(), true, true);
                 break;
             case "bottoms":
-                printList("All bottoms: ", Collections.singleton(api.listBottoms()), true, true);
+                printList("All bottoms: ", api.listBottoms(), true, true);
                 break;
             case "tops":
-                printList("All tops: ", Collections.singleton(api.listTops()), true, true);
+                printList("All tops: ", api.listTops(), true, true);
                 break;
             case "footwear":
-                printList("All footwear: ", Collections.singleton(api.listFootwares()), true, true);
+                printList("All footwear: ", api.listFootwares(), true, true);
                 break;
             case "users":
-                printList("All users: ", Collections.singleton(api.listUsers()), true, true);
+                printList("All users: ", api.listUsers(), true, true);
                 break;
             case "descriptors":
-                printList("All descriptors: ", Collections.singleton(api.listDescriptors()), true, true);
+                printList("All descriptors: ", api.listDescriptors(), true, true);
                 break;
             case "colors":
-                printList("All colors: ", Collections.singleton(api.listColorDescriptors()), true, true);
+                printList("All colors: ", api.listColorDescriptors(), true, true);
                 break;
             case "brands":
-                printList("All brands: ", Collections.singleton(api.listBrandDescriptors()), true, true);
+                printList("All brands: ", api.listBrandDescriptors(), true, true);
                 break;
             case "fanciness":
-                printList("All fancy: ", Collections.singleton(api.listFancinessDescriptors()), true, true);
+                printList("All fancy: ", api.listFancinessDescriptors(), true, true);
                 break;
             case "subtypes":
-                printList("All subtypes: ", Collections.singleton(api.listSubtypeDescriptors()), true, true);
+                printList("All subtypes: ", api.listSubtypeDescriptors(), true, true);
                 break;
             case "groupings":
-                printList("All groupings: ", Collections.singleton(api.listGroupings()), true, true);
+                printList("All groupings: ", api.listGroupings(), true, true);
                 break;
             case "collections":
-                printList("All collections: ", Collections.singleton(api.listCollectionGroupings()), true, true);
+                printList("All collections: ", api.listCollectionGroupings(), true, true);
                 break;
             case "sets":
-                printList("All sets: ", Collections.singleton(api.listSetGroupings()), true, true);
+                printList("All sets: ", api.listSetGroupings(), true, true);
                 break;
             default:
                 System.out.println("We need a second argument for list category.");
@@ -506,6 +507,6 @@ public class Main {
     }
 
     private static String getArgumentN(String[] args, int n) {
-        return (args.length > 0) ? args[0] : null;
+        return (args.length > n) ? args[n] : "";
     }
 }
