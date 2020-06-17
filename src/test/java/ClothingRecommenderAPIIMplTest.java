@@ -438,7 +438,7 @@ public class ClothingRecommenderAPIIMplTest {
         Clothing c = session.load(Clothing.class, "CID_blueJeans");
         User u = session.load(User.class, "hermione");
         List<Clothing> recommended = api.recommendRelatedItems(u.getUsername(), c);
-        assertEquals(2, recommended.size());
+        assertEquals(4, recommended.size());
         assertTrue(recommended.contains(session.load(Clothing.class, "CID_whiteVans")));
         assertTrue(recommended.contains(session.load(Clothing.class, "CID_whiteBlouse")));
     }
@@ -448,7 +448,7 @@ public class ClothingRecommenderAPIIMplTest {
         Clothing c = session.load(Clothing.class, "CID_redSkirt");
         User u = session.load(User.class, "hermione");
         List<Clothing> recommended = api.recommendSimilarItems(u.getUsername(), c);
-        assertEquals(5, recommended.size());
+        assertEquals(11, recommended.size());
         assertTrue(recommended.contains(session.load(Clothing.class, "CID_redHeels")));
         assertTrue(recommended.contains(session.load(Clothing.class, "CID_brownDressShoes")));
         assertTrue(recommended.contains(session.load(Clothing.class, "CID_graysweater")));

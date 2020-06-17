@@ -68,6 +68,7 @@ public class Main {
                 break;
             case "filldb":
                 fillupDatabase();
+                break;
             default:
                 System.out.println("We need a first action argument.");
                 System.out.println("[list, closet, describe-clothing]");
@@ -480,7 +481,7 @@ public class Main {
         s.append(title);
         if (multiline)
             s.append("\n");
-        if (list.iterator().hasNext()) {
+        if (!list.iterator().hasNext()) {
             s.append("\tNothing found");
         }
         for (Object o : list) {
