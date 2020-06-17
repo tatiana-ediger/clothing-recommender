@@ -1,16 +1,16 @@
 import domain.CollectionGrouping;
 import domain.Grouping;
-import domain.GroupingTypes;
+import domain.GroupingType;
 import domain.SetGrouping;
 import org.neo4j.ogm.session.Session;
 
 public class GroupingFactory {
-    public static Grouping make(GroupingTypes type, String value, Session session) {
+    public static Grouping make(GroupingType type, String value, Session session) {
         Grouping prev;
         Grouping grouping = null;
         switch (type) {
             case COLLECTION:
-                prev = session.load(CollectionGrouping.class, value);
+                prev = session.load(CollectionGrouping.class, value); //TODO: test!!!
                 if (prev == null)
                     grouping = new CollectionGrouping(value);
                 break;

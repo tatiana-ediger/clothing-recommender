@@ -10,7 +10,7 @@ public class Main {
     public static void main(String... args) {
         Session session = Neo4jSessionFactory.getInstance().getNeo4jSession();
 
-        Clothing s1 = new TopClothing("Yellow Shirt");
+        Clothing s1 = new TopClothing("yellowshirt", "Yellow Shirt");
         Descriptor yellow = new ColorDescriptor("yellow");
 
         s1.addDescriptor(yellow);

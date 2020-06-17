@@ -1,13 +1,12 @@
 package domain;
 
-import org.neo4j.ogm.annotation.NodeEntity;
-import org.neo4j.ogm.annotation.Property;
-import org.neo4j.ogm.annotation.Relationship;
+import org.neo4j.ogm.annotation.*;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @NodeEntity
 public abstract class Clothing extends AEntity {
@@ -16,8 +15,13 @@ public abstract class Clothing extends AEntity {
     private final Set<Descriptor> descriptors;
     @Relationship(type = "CLOTHING_GROUPING", direction = Relationship.INCOMING)
     private final Set<Grouping> groupings;
-    @Relationship(type = "USER_CLOTHING", direction = Relationship.INCOMING)
+    @Relationship(type = "Owns", direction = Relationship.INCOMING)
     private final Set<User> users;
+
+    @Index(unique = true)
+    @Id()
+    @Property(name = "catalogID")
+    private String catalogID;
     @Property(name = "name")
     private String name;
 
@@ -25,8 +29,8 @@ public abstract class Clothing extends AEntity {
         this(new HashSet<>(), new HashSet<>(), new HashSet<>());
     }
 
-    public Clothing(String name) {
-        this(name, new HashSet<>(), new HashSet<>(), new HashSet<>());
+    public Clothing(String catalogID, String name) {
+        this(catalogID, name, new HashSet<>(), new HashSet<>(), new HashSet<>());
     }
 
     Clothing(Set<Descriptor> descriptors, Set<Grouping> groupings, Set<User> users) {
@@ -35,25 +39,23 @@ public abstract class Clothing extends AEntity {
         this.users = users;
     }
 
-    Clothing(String name, Set<Descriptor> descriptors, Set<Grouping> groupings, Set<User> users) {
+    Clothing(String catalogID, String name, Set<Descriptor> descriptors, Set<Grouping> groupings, Set<User> users) {
         this(descriptors, groupings, users);
+        this.catalogID = catalogID;
         this.name = name;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), this.getName(), this.getDescriptors(), this.getUsers());
+        return Objects.hash(this.catalogID);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Clothing)) return false;
-        if (!super.equals(o)) return false;
-        Clothing clothing = (Clothing) o;
-        return Objects.equals(this.getName(), clothing.getName()) &&
-                Objects.equals(this.getDescriptors(), clothing.getDescriptors()) &&
-                Objects.equals(this.getUsers(), clothing.getUsers());
+        Clothing other = (Clothing) o;
+        return Objects.equals(this.getCatalogId(), other.getCatalogId());
     }
 
     public String getName() {
@@ -76,20 +78,40 @@ public abstract class Clothing extends AEntity {
         return this.groupings;
     }
 
+    public String getCatalogId() {
+        return this.catalogID;
+    }
+
     public void addDescriptors(List<Descriptor> attrs) {
-        this.descriptors.addAll(attrs);
+        attrs.forEach(this::addDescriptor);
     }
 
     public void addDescriptor(Descriptor descriptor) {
         this.descriptors.add(descriptor);
+        descriptor.addClothing(this);
     }
 
     public void addGroupings(List<Grouping> attrs) {
-        this.groupings.addAll(attrs);
+        attrs.forEach(this::addGrouping);
     }
 
     public void addGrouping(Grouping grouping) {
         this.groupings.add(grouping);
+        grouping.addClothing(this);
+    }
+
+    public abstract ClothingType getType();
+
+    public boolean matchesType(Clothing other) {
+        return this.getType() == other.getType();
+    }
+
+    public List<Clothing> filterOfDifferentType(List<Clothing> clothings) {
+        return clothings.stream().filter(clothing -> clothing.matchesType(this)).collect(Collectors.toList());
+    }
+
+    public void addUser(User user) {
+        this.users.add(user);
     }
 }
 

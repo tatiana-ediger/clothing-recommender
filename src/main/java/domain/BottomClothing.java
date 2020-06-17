@@ -9,7 +9,12 @@ public class BottomClothing extends Clothing {
 
     }
 
-    public BottomClothing(String name) {
-        super(name);
+    public BottomClothing(String catalogID, String name) {
+        super(catalogID, name);
+    }
+
+    @Override
+    public ClothingType getType() {
+        return ClothingType.BOTTOM;
     }
 }

@@ -1,12 +1,12 @@
 package domain;
 
-public enum ClothingType {
+public enum DescriptorType {
 
-    TOP("Top"), BOTTOM("Bottom"), FOOTWEAR("Footwear");
+    COLOR("color"), BRAND("brand"), SUBTYPE("subtype"), FANCINESS("fanciness");
 
     private final String type;
 
-    ClothingType(String type) {
+    DescriptorType(String type) {
         this.type = type;
     }
 

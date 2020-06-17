@@ -20,7 +20,7 @@ public class DescriptorFactory {
      * @param value the value of the given Attribute.
      * @return the Attribute.
      */
-    public static Descriptor make(DescriptorTypes type, String value, Session session) {
+    public static Descriptor make(DescriptorType type, String value, Session session) {
         Descriptor prev;
         Descriptor desc = null;
         switch (type) {

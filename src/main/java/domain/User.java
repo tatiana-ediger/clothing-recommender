@@ -1,8 +1,6 @@
 package domain;
 
-import org.neo4j.ogm.annotation.NodeEntity;
-import org.neo4j.ogm.annotation.Property;
-import org.neo4j.ogm.annotation.Relationship;
+import org.neo4j.ogm.annotation.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,31 +8,40 @@ import java.util.Set;
 @NodeEntity
 public class User extends AEntity {
 
+    @Relationship(type = "Owns", direction = Relationship.OUTGOING)
+    private final Set<Clothing> closet; //Cloths + Set
+
+    @Index(unique = true)
+    @Id()
+    @Property(name = "username")
+    private String username;
     @Property(name = "name")
     private String name;
 
-    @Relationship(type = "USER_CLOTHING", direction = Relationship.OUTGOING)
-    private Set<Clothing> closet; //Cloths + Set
-
     public User() {
-    }
-
-    public User(String name) {
-        this(name, new HashSet<>());
-    }
-
-    public User(String name, Long id) {
-        super(id);
-        this.name = name;
         this.closet = new HashSet<>();
     }
 
-    User(String name, Set<Clothing> closet) {
+    User(String username, String name, Set<Clothing> closet) {
+        this.username = username;
         this.name = name;
         this.closet = closet;
     }
 
+    public User(String username, String name) {
+        this(username, name, new HashSet<>());
+    }
+
     public void addToCloset(Clothing clothing) {
         this.closet.add(clothing);
+        clothing.addUser(this);
+    }
+
+    public String getUsername() {
+        return this.username;
+    }
+
+    public String getName() {
+        return this.name;
     }
 }
