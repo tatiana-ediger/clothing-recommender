@@ -66,8 +66,9 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
 
         // 2.2 that are not the same clothing type - Filter of same type
         query.append("AND NOT in_descriptions:").append(selected.getType().getType()).append(" \n");
+        query.append("WITH in_descriptions, count(DISTINCT descriptions) as cnt \n");
 
-        query.append("RETURN in_descriptions \n");
+        query.append("RETURN in_descriptions ORDER by cnt DESC\n");
 //        query.append("ORDER BY count(descriptions);");
 
         Iterable<Clothing> result = session.query(Clothing.class, query.toString(), params);
@@ -92,14 +93,15 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
         params.put("userid", userID);
 
         query.append("MATCH (selected)<-[:CLOTHING_GROUPING]-(groupings:Grouping)");
-        query.append("-[:CLOTHING_GROUPING]->(in_groupings:Clothing) \n");
+        query.append("-[cg:CLOTHING_GROUPING]->(in_groupings:Clothing) \n");
         // 3. Filter by not already in the user's closet
         query.append("WHERE NOT (in_groupings)<-[:Owns]-(user) \n");
 
         // 2.2 that are not the same clothing type - Filter of same type
         query.append("AND NOT in_groupings:").append(selected.getType().getType()).append(" \n");
+        query.append("WITH in_groupings, count(DISTINCT cg) as cnt \n");
 
-        query.append("RETURN in_groupings;");
+        query.append("RETURN in_groupings ORDER by cnt DESC;");
 
         Result res = session.query(query.toString(), params);
 
