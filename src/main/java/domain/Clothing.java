@@ -1,9 +1,6 @@
 package domain;
 
-import org.neo4j.ogm.annotation.Id;
-import org.neo4j.ogm.annotation.NodeEntity;
-import org.neo4j.ogm.annotation.Property;
-import org.neo4j.ogm.annotation.Relationship;
+import org.neo4j.ogm.annotation.*;
 
 import java.util.HashSet;
 import java.util.List;
@@ -20,7 +17,9 @@ public abstract class Clothing extends AEntity {
     private final Set<Grouping> groupings;
     @Relationship(type = "Owns", direction = Relationship.INCOMING)
     private final Set<User> users;
-    @Id
+
+    @Index(unique = true)
+    @Id()
     @Property(name = "catalogID")
     private String catalogID;
     @Property(name = "name")
@@ -80,6 +79,10 @@ public abstract class Clothing extends AEntity {
 
     public Set<Grouping> getGroupings() {
         return this.groupings;
+    }
+
+    public String getCatalogId() {
+        return this.catalogID;
     }
 
     public void addDescriptors(List<Descriptor> attrs) {

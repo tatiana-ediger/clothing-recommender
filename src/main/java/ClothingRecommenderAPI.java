@@ -15,24 +15,23 @@ public interface ClothingRecommenderAPI {
      * @param clothingName the name of the new clothing item
      * @param descriptors  the different descriptors of the given piece of clothing
      * @param groupings    the different groupings of the given piece of clothing
-     * @return
      */
-    Long addToCatalog(ClothingType clothingType, String catalogID, String clothingName, List<Descriptor> descriptors,
+    void addToCatalog(ClothingType clothingType, String catalogID, String clothingName, List<Descriptor> descriptors,
                       List<Grouping> groupings);
 
     /**
      * Loads the Clothing item with the corresponding catalogID.
+     *
      * @param catalogID the desired clothing item's catalog ID.
      * @return the Clothing item.
      */
-    Clothing loadClothingByID(String catalogID);
+    Clothing loadClothingByCatalogID(String catalogID);
 
     /**
-     *
      * @param userID
      * @return
      */
-    User loadUserByID(String userID);
+    User loadUserByUsername(String userID);
 
     /**
      * Adds clothing to a user's closet when you have access to the whole user.
@@ -62,19 +61,19 @@ public interface ClothingRecommenderAPI {
      * Given a clothing item the user wants to purchase, also recommends other clothing items that share
      * a lot of similar traits.
      *
-     * @param userID    the userID of the user we are recommending to.
+     * @param userID   the userID of the user we are recommending to.
      * @param selected the article of clothing the user has selected.
      * @return the list of recommended clothing.
      */
-    List<Clothing> recommendSimilarItems(long userID, Clothing selected);
+    List<Clothing> recommendSimilarItems(String userID, Clothing selected);
 
     /**
      * Given a clothing item the user wants to purchase, also recommends other clothing items that are often
      * purchased at the same time.
      *
-     * @param userID    the userID of the user we are recommending to.
+     * @param userID   the userID of the user we are recommending to.
      * @param selected the given piece of clothing.
      * @return the list of recommended clothing.
      */
-    List<Clothing> recommendRelatedItems(long userID, Clothing selected);
+    List<Clothing> recommendRelatedItems(String userID, Clothing selected);
 }
