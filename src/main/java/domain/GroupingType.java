@@ -1,12 +1,12 @@
 package domain;
 
-public enum ClothingType {
+public enum GroupingType {
 
-    TOP("Top"), BOTTOM("Bottom"), FOOTWEAR("Footwear");
+    COLLECTION("collection"), SET("set");
 
     private final String type;
 
-    ClothingType(String type) {
+    GroupingType(String type) {
         this.type = type;
     }
 

@@ -1,5 +1,5 @@
 import domain.*;
-import org.neo4j.helpers.collection.Iterators;
+import org.neo4j.ogm.model.Result;
 import org.neo4j.ogm.session.Session;
 
 import java.util.ArrayList;
@@ -52,10 +52,10 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
         StringBuilder query = new StringBuilder();
 
         //1. find the descriptors of the selected Clothing
-        query.append("MATCH (selected:Clothing { catalogID: '$cid' }) \n");
+        query.append("MATCH (selected:Clothing { catalogID: $cid }) \n");
         params.put("cid", selected.getCatalogId());
 
-        query.append("MATCH (user:User { username: '$userid' }) \n");
+        query.append("MATCH (user:User { username: $userid }) \n");
         params.put("userid", userID);
 
         query.append("MATCH (selected)<-[:CLOTHING_DESCRIPTOR]-(descriptors:Descriptor)");
@@ -64,13 +64,16 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
         //2. Find all the other clothing that also have these descriptors
         query.append("WHERE NOT (in_descriptions)<-[:Owns]-(user) \n");
 
-        query.append("RETURN in_descriptions;");
-        //query.append("ORDER BY count(descriptions);");
+        // 2.2 that are not the same clothing type - Filter of same type
+        query.append("AND NOT in_descriptions:").append(selected.getType().getType()).append(" \n");
 
-        //3. Filter out the clothing items that are already in the user's closet
+        query.append("RETURN in_descriptions \n");
+//        query.append("ORDER BY count(descriptions);");
+
         Iterable<Clothing> result = session.query(Clothing.class, query.toString(), params);
-
-        return selected.filterOfDifferentType(Iterators.asList(result.iterator()));
+        List<Clothing> clothings = new ArrayList<>();
+        result.forEach(clothings::add);
+        return clothings;
     }
 
     @Override
@@ -82,10 +85,10 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
 
         // 1. find the groupings of the selected clothings
         // 2. Find all of the other clothings in those groupings
-        query.append("MATCH (selected:Clothing { catalogID: '$cid' }) \n");
+        query.append("MATCH (selected:Clothing { catalogID: $cid }) \n");
         params.put("cid", selected.getCatalogId());
 
-        query.append("MATCH (user:User { username: '$userid' }) \n");
+        query.append("MATCH (user:User { username: $userid }) \n");
         params.put("userid", userID);
 
         query.append("MATCH (selected)<-[:CLOTHING_GROUPING]-(groupings:Grouping)");
@@ -93,16 +96,16 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
         // 3. Filter by not already in the user's closet
         query.append("WHERE NOT (in_groupings)<-[:Owns]-(user) \n");
 
+        // 2.2 that are not the same clothing type - Filter of same type
+        query.append("AND NOT in_groupings:").append(selected.getType().getType()).append(" \n");
+
         query.append("RETURN in_groupings;");
 
-//        query.append("RETURN selected;");
+        Result res = session.query(query.toString(), params);
 
         Iterable<Clothing> result = session.query(Clothing.class, query.toString(), params);
         List<Clothing> clothings = new ArrayList<>();
         result.forEach(clothings::add);
-
-        //2.2 that are not the same clothing type
-        clothings = selected.filterOfDifferentType(clothings);
         return clothings;
     }
 

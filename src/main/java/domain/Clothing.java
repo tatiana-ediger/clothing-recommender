@@ -47,18 +47,15 @@ public abstract class Clothing extends AEntity {
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        return Objects.hash(this.catalogID);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Clothing)) return false;
-        if (!super.equals(o)) return false;
-        Clothing clothing = (Clothing) o;
-        return Objects.equals(this.getName(), clothing.getName()) &&
-                Objects.equals(this.getDescriptors(), clothing.getDescriptors()) &&
-                Objects.equals(this.getUsers(), clothing.getUsers());
+        Clothing other = (Clothing) o;
+        return Objects.equals(this.getCatalogId(), other.getCatalogId());
     }
 
     public String getName() {

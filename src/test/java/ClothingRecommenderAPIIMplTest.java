@@ -1,5 +1,7 @@
 import domain.*;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.neo4j.ogm.config.Configuration;
 import org.neo4j.ogm.session.Session;
 import org.neo4j.ogm.session.SessionFactory;
@@ -45,54 +47,54 @@ public class ClothingRecommenderAPIIMplTest {
         System.out.println("Mapped port for Neo4j 7474: " + mapped7474);
         int mapped7687 = databaseServer.getMappedPort(7687);
         System.out.println("Mapped port for Neo4j 7687: " + mapped7687);
+
+        startupTestData();
     }
 
     @AfterAll
     static public void tearDown() throws Exception {
         if (session != null) {
-            session.purgeDatabase();
-            session.clear();
+            cleanTestData();
         }
     }
 
-    @BeforeEach
-    public void startupTestData() {
-        Descriptor jeans = DescriptorFactory.make(DescriptorTypes.SUBTYPE, "jeans", this.session);
-        Descriptor slacks = DescriptorFactory.make(DescriptorTypes.SUBTYPE, "slacks", this.session);
-        Descriptor shorts = DescriptorFactory.make(DescriptorTypes.SUBTYPE, "shorts", this.session);
-        Descriptor skirt = DescriptorFactory.make(DescriptorTypes.SUBTYPE, "skirt", this.session);
-        Descriptor sandals = DescriptorFactory.make(DescriptorTypes.SUBTYPE, "sandals", this.session);
-        Descriptor suit_blazer = DescriptorFactory.make(DescriptorTypes.SUBTYPE, "suit_blazer", this.session);
-        Descriptor suit_trousers = DescriptorFactory.make(DescriptorTypes.SUBTYPE, "suit_trousers", this.session);
-        Descriptor dress_shoes = DescriptorFactory.make(DescriptorTypes.SUBTYPE, "dress_shoes", this.session);
-        Descriptor heels = DescriptorFactory.make(DescriptorTypes.SUBTYPE, "heels", this.session);
-        Descriptor button_up = DescriptorFactory.make(DescriptorTypes.SUBTYPE, "button_up", this.session);
-        Descriptor blouse = DescriptorFactory.make(DescriptorTypes.SUBTYPE, "blouse", this.session);
-        Descriptor top = DescriptorFactory.make(DescriptorTypes.SUBTYPE, "top", this.session);
-        Descriptor sweater = DescriptorFactory.make(DescriptorTypes.SUBTYPE, "sweater", this.session);
-        Descriptor t_shirt = DescriptorFactory.make(DescriptorTypes.SUBTYPE, "t_shirt", this.session);
-        Descriptor red = DescriptorFactory.make(DescriptorTypes.COLOR, "red", this.session);
-        Descriptor blue = DescriptorFactory.make(DescriptorTypes.COLOR, "blue", this.session);
-        Descriptor black = DescriptorFactory.make(DescriptorTypes.COLOR, "black", this.session);
-        Descriptor white = DescriptorFactory.make(DescriptorTypes.COLOR, "white", this.session);
-        Descriptor khaki = DescriptorFactory.make(DescriptorTypes.COLOR, "khaki", this.session);
-        Descriptor green = DescriptorFactory.make(DescriptorTypes.COLOR, "green", this.session);
-        Descriptor gray = DescriptorFactory.make(DescriptorTypes.COLOR, "gray", this.session);
-        Descriptor brown = DescriptorFactory.make(DescriptorTypes.COLOR, "brown", this.session);
-        Descriptor vans = DescriptorFactory.make(DescriptorTypes.BRAND, "Vans", this.session);
-        Descriptor nike = DescriptorFactory.make(DescriptorTypes.BRAND, "Nike", this.session);
-        Descriptor birkenstock = DescriptorFactory.make(DescriptorTypes.BRAND, "Birkenstock", this.session);
-        Descriptor fancy = DescriptorFactory.make(DescriptorTypes.FANCINESS, "fancy", this.session);
-        Descriptor casual = DescriptorFactory.make(DescriptorTypes.FANCINESS, "casual", this.session);
+    static public void startupTestData() {
+        Descriptor jeans = DescriptorFactory.make(DescriptorType.SUBTYPE, "jeans", session);
+        Descriptor slacks = DescriptorFactory.make(DescriptorType.SUBTYPE, "slacks", session);
+        Descriptor shorts = DescriptorFactory.make(DescriptorType.SUBTYPE, "shorts", session);
+        Descriptor skirt = DescriptorFactory.make(DescriptorType.SUBTYPE, "skirt", session);
+        Descriptor sandals = DescriptorFactory.make(DescriptorType.SUBTYPE, "sandals", session);
+        Descriptor suit_blazer = DescriptorFactory.make(DescriptorType.SUBTYPE, "suit_blazer", session);
+        Descriptor suit_trousers = DescriptorFactory.make(DescriptorType.SUBTYPE, "suit_trousers", session);
+        Descriptor dress_shoes = DescriptorFactory.make(DescriptorType.SUBTYPE, "dress_shoes", session);
+        Descriptor heels = DescriptorFactory.make(DescriptorType.SUBTYPE, "heels", session);
+        Descriptor button_up = DescriptorFactory.make(DescriptorType.SUBTYPE, "button_up", session);
+        Descriptor blouse = DescriptorFactory.make(DescriptorType.SUBTYPE, "blouse", session);
+        Descriptor top = DescriptorFactory.make(DescriptorType.SUBTYPE, "top", session);
+        Descriptor sweater = DescriptorFactory.make(DescriptorType.SUBTYPE, "sweater", session);
+        Descriptor t_shirt = DescriptorFactory.make(DescriptorType.SUBTYPE, "t_shirt", session);
+        Descriptor red = DescriptorFactory.make(DescriptorType.COLOR, "red", session);
+        Descriptor blue = DescriptorFactory.make(DescriptorType.COLOR, "blue", session);
+        Descriptor black = DescriptorFactory.make(DescriptorType.COLOR, "black", session);
+        Descriptor white = DescriptorFactory.make(DescriptorType.COLOR, "white", session);
+        Descriptor khaki = DescriptorFactory.make(DescriptorType.COLOR, "khaki", session);
+        Descriptor green = DescriptorFactory.make(DescriptorType.COLOR, "green", session);
+        Descriptor gray = DescriptorFactory.make(DescriptorType.COLOR, "gray", session);
+        Descriptor brown = DescriptorFactory.make(DescriptorType.COLOR, "brown", session);
+        Descriptor vans = DescriptorFactory.make(DescriptorType.BRAND, "Vans", session);
+        Descriptor nike = DescriptorFactory.make(DescriptorType.BRAND, "Nike", session);
+        Descriptor birkenstock = DescriptorFactory.make(DescriptorType.BRAND, "Birkenstock", session);
+        Descriptor fancy = DescriptorFactory.make(DescriptorType.FANCINESS, "fancy", session);
+        Descriptor casual = DescriptorFactory.make(DescriptorType.FANCINESS, "casual", session);
 
-        Grouping fall_collection = GroupingFactory.make(GroupingTypes.COLLECTION, "Fall 2020", this.session);
-        Grouping winter_collection = GroupingFactory.make(GroupingTypes.COLLECTION, "Winter 2050", this.session);
-        Grouping blm_collection = GroupingFactory.make(GroupingTypes.COLLECTION, "BLM Collection", this.session);
-        Grouping summer_collection = GroupingFactory.make(GroupingTypes.COLLECTION, "Summer 1999", this.session);
-        Grouping fancy_wedding_suit_set = GroupingFactory.make(GroupingTypes.SET, "Wedding Suit", this.session);
-        Grouping fancy_party_set = GroupingFactory.make(GroupingTypes.SET, "Fancy Party Set", this.session);
-        Grouping casual_blue_set = GroupingFactory.make(GroupingTypes.SET, "Day in the Park (blue)", this.session);
-        Grouping casual_black_set = GroupingFactory.make(GroupingTypes.SET, "Day in the Park (black)", this.session);
+        Grouping fall_collection = GroupingFactory.make(GroupingType.COLLECTION, "Fall 2020", session);
+        Grouping winter_collection = GroupingFactory.make(GroupingType.COLLECTION, "Winter 2050", session);
+        Grouping blm_collection = GroupingFactory.make(GroupingType.COLLECTION, "BLM Collection", session);
+        Grouping summer_collection = GroupingFactory.make(GroupingType.COLLECTION, "Summer 1999", session);
+        Grouping fancy_wedding_suit_set = GroupingFactory.make(GroupingType.SET, "Wedding Suit", session);
+        Grouping fancy_party_set = GroupingFactory.make(GroupingType.SET, "Fancy Party Set", session);
+        Grouping casual_blue_set = GroupingFactory.make(GroupingType.SET, "Day in the Park (blue)", session);
+        Grouping casual_black_set = GroupingFactory.make(GroupingType.SET, "Day in the Park (black)", session);
 
         Clothing blue_jeans = ClothingFactory.make(ClothingType.BOTTOM, "CID_blueJeans",
                 "Blue Jeans");
@@ -390,8 +392,8 @@ public class ClothingRecommenderAPIIMplTest {
         session.save(user4, 2);
     }
 
-    @AfterEach
-    public void cleanTestData() {
+    static public void cleanTestData() {
+        session.clear();
         session.purgeDatabase();
         session.clear();
     }
@@ -403,17 +405,17 @@ public class ClothingRecommenderAPIIMplTest {
         int before = allBottoms.size();
 
         List<Descriptor> descriptors = new ArrayList<Descriptor>();
-        descriptors.add(DescriptorFactory.make(DescriptorTypes.COLOR, "green", this.session));
-        descriptors.add(DescriptorFactory.make(DescriptorTypes.COLOR, "black", this.session));
-        descriptors.add(DescriptorFactory.make(DescriptorTypes.COLOR, "blue", this.session));
-        descriptors.add(DescriptorFactory.make(DescriptorTypes.COLOR, "yellow", this.session));
-        descriptors.add(DescriptorFactory.make(DescriptorTypes.BRAND, "gap", this.session));
-        descriptors.add(DescriptorFactory.make(DescriptorTypes.FANCINESS, "extra formal", this.session));
-        descriptors.add(DescriptorFactory.make(DescriptorTypes.SUBTYPE, "slacks", this.session));
+        descriptors.add(DescriptorFactory.make(DescriptorType.COLOR, "green", session));
+        descriptors.add(DescriptorFactory.make(DescriptorType.COLOR, "black", session));
+        descriptors.add(DescriptorFactory.make(DescriptorType.COLOR, "blue", session));
+        descriptors.add(DescriptorFactory.make(DescriptorType.COLOR, "yellow", session));
+        descriptors.add(DescriptorFactory.make(DescriptorType.BRAND, "gap", session));
+        descriptors.add(DescriptorFactory.make(DescriptorType.FANCINESS, "extra formal", session));
+        descriptors.add(DescriptorFactory.make(DescriptorType.SUBTYPE, "slacks", session));
 
         List<Grouping> groupings = new ArrayList<Grouping>();
-        groupings.add(GroupingFactory.make(GroupingTypes.COLLECTION, "Rebellious Collection", this.session));
-        groupings.add(GroupingFactory.make(GroupingTypes.SET, "Multicolor Set", this.session));
+        groupings.add(GroupingFactory.make(GroupingType.COLLECTION, "Rebellious Collection", session));
+        groupings.add(GroupingFactory.make(GroupingType.SET, "Multicolor Set", session));
 
         api.addToCatalog(ClothingType.BOTTOM, "CID_fancyCrazySlacks",
                 "Bottom Fancy Crazy Slacks", descriptors, groupings);
@@ -436,14 +438,21 @@ public class ClothingRecommenderAPIIMplTest {
         Clothing c = session.load(Clothing.class, "CID_blueJeans");
         User u = session.load(User.class, "hermione");
         List<Clothing> recommended = api.recommendRelatedItems(u.getUsername(), c);
-        assertEquals(3, recommended.size());
+        assertEquals(2, recommended.size());
+        assertTrue(recommended.contains(session.load(Clothing.class, "CID_whiteVans")));
+        assertTrue(recommended.contains(session.load(Clothing.class, "CID_whiteBlouse")));
     }
 
     @Test
     void recommendSimilarItems() {
-        Clothing c = session.load(Clothing.class, "CID_blueJeans");
+        Clothing c = session.load(Clothing.class, "CID_redSkirt");
         User u = session.load(User.class, "hermione");
-        List<Clothing> similarItems = api.recommendSimilarItems(u.getUsername(), c);
-        assertEquals(4, similarItems.size());
+        List<Clothing> recommended = api.recommendSimilarItems(u.getUsername(), c);
+        assertEquals(5, recommended.size());
+        assertTrue(recommended.contains(session.load(Clothing.class, "CID_redHeels")));
+        assertTrue(recommended.contains(session.load(Clothing.class, "CID_brownDressShoes")));
+        assertTrue(recommended.contains(session.load(Clothing.class, "CID_graysweater")));
+        assertTrue(recommended.contains(session.load(Clothing.class, "CID_whiteBlouse")));
+        assertTrue(recommended.contains(session.load(Clothing.class, "CID_whiteButtonup")));
     }
 }
