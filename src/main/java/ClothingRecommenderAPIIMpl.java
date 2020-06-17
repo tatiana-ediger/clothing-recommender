@@ -35,6 +35,7 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
     }
 
     @Override
+<<<<<<< Updated upstream
     public Descriptor loadDescriptor(String value) {
         Session session = this.sessionFactory.getNeo4jSession();
         return session.load(Descriptor.class, value);
@@ -59,10 +60,41 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
     }
 
     @Override
+=======
+>>>>>>> Stashed changes
     public List<Clothing> recommendPurchase(String userID) {
         //Rank the number of connections each clothing
         Session session = this.sessionFactory.getNeo4jSession();
-        return null; //TODO: implement
+
+        //general idea: recommend something to user based on what similar users like
+        // 1. find users who have the most same clothing items to this user
+        // 1.1 by looking at :OWNS edges select top 2
+        // 1.2 if we don't get anything back, recommend something RANDOM
+        // 2. look at their clothes that this user does not own
+        // 3. recommend top clothing
+
+        Map<String, Object> params = new HashMap<>();
+        StringBuilder query = new StringBuilder();
+        query.append("MATCH (user:User { username: $userid }) \n");
+        params.put("userid", userID);
+
+        query.append("MATCH (c:Clothing)<-[:Owns]-(user) \n");
+
+        query.append("MATCH (others:User)-[o:Owns]->(clothing) \n");
+        query.append("WITH user, others, count(o) as cnt \n");
+        query.append("WITH user, others ORDER BY cnt DESC \n");
+
+        query.append("MATCH (other_clothing:Clothing)<-[owns:Owns]-(others)");
+        query.append("WHERE NOT (other_clothing)<-[:Owns]-(user) \n");
+        query.append("WITH other_clothing, count(owns) as cl_count \n");
+        query.append("RETURN other_clothing ORDER BY cl_count DESC;");
+
+
+        Iterable<Clothing> result = session.query(Clothing.class, query.toString(), params);
+        List<Clothing> clothings = new ArrayList<>();
+        result.forEach(clothings::add);
+        return clothings;
+
     }
 
     @Override

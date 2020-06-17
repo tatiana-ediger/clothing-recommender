@@ -455,4 +455,13 @@ public class ClothingRecommenderAPIIMplTest {
         assertTrue(recommended.contains(session.load(Clothing.class, "CID_whiteBlouse")));
         assertTrue(recommended.contains(session.load(Clothing.class, "CID_whiteButtonup")));
     }
+
+    @Test
+    void recommendPurchase() {
+        User u = session.load(User.class, "hermione");
+        List<Clothing> recommended = api.recommendPurchase(u.getUsername());
+        //assertEquals(2, recommended.size());
+        assertTrue(recommended.contains(session.load(Clothing.class, "CID_graysweater")));
+        assertTrue(recommended.contains(session.load(Clothing.class, "CID_blackSkirt")));
+    }
 }
