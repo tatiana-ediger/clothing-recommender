@@ -14,10 +14,10 @@ public abstract class Grouping {
 
     @Id()
     @Index(unique = true)
-    private String value;
+    protected String value;
 
     @Relationship(type = "CLOTHING_GROUPING", direction = Relationship.OUTGOING)
-    private Set<Clothing> clothings;
+    protected Set<Clothing> clothings;
 
     public Grouping() {
     }
@@ -25,6 +25,14 @@ public abstract class Grouping {
     public Grouping(String value) {
         this.value = value;
         this.clothings = new HashSet<>();
+    }
+
+    @Override
+    public String toString() {
+        return "Grouping{" +
+                "value='" + this.value + '\'' +
+                ", clothings=" + this.clothings.size() +
+                '}';
     }
 
     @Override

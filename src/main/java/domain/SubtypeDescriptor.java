@@ -12,4 +12,12 @@ public class SubtypeDescriptor extends Descriptor {
     public SubtypeDescriptor(String value) {
         super(value);
     }
+
+    @Override
+    public String toString() {
+        return "SubtypeDescriptor{" +
+                "value='" + this.value + '\'' +
+                ", clothings=" + this.clothings.size() +
+                '}';
+    }
 }

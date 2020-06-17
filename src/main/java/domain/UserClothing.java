@@ -9,7 +9,14 @@ public class UserClothing extends ARelationship {
 
     @StartNode
     private User user;
-
     @EndNode
     private Clothing clothing;
+
+    @Override
+    public String toString() {
+        return "UserClothing{" +
+                "user=" + this.user.getUsername() +
+                ", clothing=" + this.clothing.getCatalogId() +
+                '}';
+    }
 }

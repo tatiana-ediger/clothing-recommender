@@ -12,18 +12,18 @@ import java.util.stream.Collectors;
 public abstract class Clothing extends AEntity {
 
     @Relationship(type = "CLOTHING_DESCRIPTOR", direction = Relationship.INCOMING)
-    private final Set<Descriptor> descriptors;
+    protected final Set<Descriptor> descriptors;
     @Relationship(type = "CLOTHING_GROUPING", direction = Relationship.INCOMING)
-    private final Set<Grouping> groupings;
+    protected final Set<Grouping> groupings;
     @Relationship(type = "Owns", direction = Relationship.INCOMING)
-    private final Set<User> users;
+    protected final Set<User> users;
 
     @Index(unique = true)
     @Id()
     @Property(name = "catalogID")
-    private String catalogID;
+    protected String catalogID;
     @Property(name = "name")
-    private String name;
+    protected String name;
 
     public Clothing() {
         this(new HashSet<>(), new HashSet<>(), new HashSet<>());
@@ -33,16 +33,27 @@ public abstract class Clothing extends AEntity {
         this(catalogID, name, new HashSet<>(), new HashSet<>(), new HashSet<>());
     }
 
-    Clothing(Set<Descriptor> descriptors, Set<Grouping> groupings, Set<User> users) {
+    protected Clothing(Set<Descriptor> descriptors, Set<Grouping> groupings, Set<User> users) {
         this.descriptors = descriptors;
         this.groupings = groupings;
         this.users = users;
     }
 
-    Clothing(String catalogID, String name, Set<Descriptor> descriptors, Set<Grouping> groupings, Set<User> users) {
+    protected Clothing(String catalogID, String name, Set<Descriptor> descriptors, Set<Grouping> groupings, Set<User> users) {
         this(descriptors, groupings, users);
         this.catalogID = catalogID;
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Clothing{" +
+                "descriptors=" + this.descriptors.size() +
+                ", groupings=" + this.groupings.size() +
+                ", users=" + this.users.size() +
+                ", catalogID='" + this.catalogID + '\'' +
+                ", name='" + this.name + '\'' +
+                '}';
     }
 
     @Override

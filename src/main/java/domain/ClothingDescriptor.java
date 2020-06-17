@@ -9,7 +9,14 @@ public class ClothingDescriptor extends ARelationship {
 
     @StartNode
     private Descriptor descriptor;
-
     @EndNode
     private Clothing clothing;
+
+    @Override
+    public String toString() {
+        return "ClothingDescriptor{" +
+                "descriptor=" + this.descriptor.getName() +
+                ", clothing=" + this.clothing.getCatalogId() +
+                '}';
+    }
 }

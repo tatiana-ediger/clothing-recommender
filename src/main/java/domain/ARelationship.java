@@ -9,4 +9,14 @@ public abstract class ARelationship {
     @GeneratedValue
     private Long relationshipId;
 
+    @Override
+    public String toString() {
+        return "ARelationship{" +
+                "relationshipId=" + this.relationshipId +
+                '}';
+    }
+
+    public Long getRelationshipId() {
+        return this.relationshipId;
+    }
 }

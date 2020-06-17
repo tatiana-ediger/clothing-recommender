@@ -10,6 +10,13 @@ public enum DescriptorType {
         this.type = type;
     }
 
+    @Override
+    public String toString() {
+        return "DescriptorType{" +
+                "type='" + this.type + '\'' +
+                '}';
+    }
+
     public String getType() {
         return this.type;
     }

@@ -48,4 +48,13 @@ public class User extends AEntity {
     public String getName() {
         return this.name;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "closet=" + this.closet.size() +
+                ", username='" + this.username + '\'' +
+                ", name='" + this.name + '\'' +
+                '}';
+    }
 }

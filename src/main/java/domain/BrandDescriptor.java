@@ -12,4 +12,12 @@ public class BrandDescriptor extends Descriptor {
     public BrandDescriptor(String value) {
         super(value);
     }
+
+    @Override
+    public String toString() {
+        return "BrandDescriptor{" +
+                "value='" + this.value + '\'' +
+                ", clothings=" + this.clothings.size() +
+                '}';
+    }
 }

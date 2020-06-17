@@ -15,5 +15,12 @@ public abstract class AEntity {
     public Long getId() {
         return this.id;
     }
+
+    @Override
+    public String toString() {
+        return "AEntity{" +
+                "id=" + this.id +
+                '}';
+    }
 }
 

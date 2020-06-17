@@ -12,4 +12,12 @@ public class FancinessDescriptor extends Descriptor {
     public FancinessDescriptor(String value) {
         super(value);
     }
+
+    @Override
+    public String toString() {
+        return "FancinessDescriptor{" +
+                "value='" + this.value + '\'' +
+                ", clothings=" + this.clothings.size() +
+                '}';
+    }
 }

@@ -14,10 +14,9 @@ public abstract class Descriptor {
 
     @Id()
     @Index(unique = true)
-    private String value;
-
+    protected String value;
     @Relationship(type = "CLOTHING_DESCRIPTOR", direction = Relationship.OUTGOING)
-    private Set<Clothing> clothings;
+    protected Set<Clothing> clothings;
 
     public Descriptor() {
     }
@@ -25,6 +24,14 @@ public abstract class Descriptor {
     public Descriptor(String value) {
         this.value = value;
         this.clothings = new HashSet<>();
+    }
+
+    @Override
+    public String toString() {
+        return "Descriptor{" +
+                "value='" + this.value + '\'' +
+                ", clothings=" + this.clothings.size() +
+                '}';
     }
 
     @Override
