@@ -55,4 +55,23 @@ public class DescriptorFactory {
             return desc;
         }
     }
+
+    public static Descriptor make(DescriptorType type, String value) {
+        switch (type) {
+            case COLOR:
+                return new ColorDescriptor(value);
+            case BRAND:
+                return new BrandDescriptor(value);
+            case SUBTYPE:
+                return new SubtypeDescriptor(value);
+            case FANCINESS:
+                return new FancinessDescriptor(value);
+            default:
+                throw new IllegalArgumentException("This is not a valid type.");
+        }
+    }
+
+    public static Descriptor make(String type, String value) {
+        return make(DescriptorType.valueOf(type), value);
+    }
 }

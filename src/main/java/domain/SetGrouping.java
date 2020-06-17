@@ -11,4 +11,12 @@ public class SetGrouping extends Grouping {
     public SetGrouping(String value) {
         super(value);
     }
+
+    @Override
+    public String toString() {
+        return "SetGrouping{" +
+                "value='" + this.value + '\'' +
+                ", clothings=" + this.clothings.size() +
+                '}';
+    }
 }

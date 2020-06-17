@@ -8,7 +8,7 @@ import java.util.Set;
 @NodeEntity
 public class User extends AEntity {
 
-    @Relationship(type = "Owns", direction = Relationship.OUTGOING)
+    @Relationship(type = "OWNS", direction = Relationship.OUTGOING)
     private final Set<Clothing> closet; //Cloths + Set
 
     @Index(unique = true)
@@ -37,11 +37,24 @@ public class User extends AEntity {
         clothing.addUser(this);
     }
 
+    public Set<Clothing> getCloset() {
+        return this.closet;
+    }
+
     public String getUsername() {
         return this.username;
     }
 
     public String getName() {
         return this.name;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "closet=" + this.closet.size() +
+                ", username='" + this.username + '\'' +
+                ", name='" + this.name + '\'' +
+                '}';
     }
 }

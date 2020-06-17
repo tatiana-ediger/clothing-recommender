@@ -2,10 +2,7 @@ import domain.*;
 import org.neo4j.ogm.model.Result;
 import org.neo4j.ogm.session.Session;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * An implementation of the ClothingRecommenderAPI using Neo4J.
@@ -38,7 +35,31 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
     }
 
     @Override
-    public List<Clothing> recommendPurchase(long userID) {
+    public Descriptor loadDescriptor(String value) {
+        Session session = this.sessionFactory.getNeo4jSession();
+        return session.load(Descriptor.class, value);
+    }
+
+    @Override
+    public Descriptor loadDescriptor(String descriptorType, String value) {
+        Session session = this.sessionFactory.getNeo4jSession();
+        return session.load(Descriptor.class, value); //TODO: check sub classes
+    }
+
+    @Override
+    public Grouping loadGrouping(String value) {
+        Session session = this.sessionFactory.getNeo4jSession();
+        return session.load(Grouping.class, value);
+    }
+
+    @Override
+    public Grouping loadGrouping(String groupingType, String value) {
+        Session session = this.sessionFactory.getNeo4jSession();
+        return session.load(Grouping.class, value); //TODO: check collection/set
+    }
+
+    @Override
+    public List<Clothing> recommendPurchase(String userID) {
         //Rank the number of connections each clothing
         Session session = this.sessionFactory.getNeo4jSession();
         return null; //TODO: implement
@@ -112,6 +133,91 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
     }
 
     @Override
+    public void addUser(String username, String name) {
+        Session session = this.sessionFactory.getNeo4jSession();
+        User u = new User(username, name);
+        session.save(u);
+    }
+
+    private <T> Collection<T> listByLabel(Class<T> t) {
+        Session session = this.sessionFactory.getNeo4jSession();
+        return session.loadAll(t, 3);
+    }
+
+    @Override
+    public Collection<User> listUsers() {
+        return this.listByLabel(User.class);
+    }
+
+    @Override
+    public Collection<Clothing> listClothings() {
+        return this.listByLabel(Clothing.class);
+    }
+
+    @Override
+    public Collection<BottomClothing> listBottoms() {
+        return this.listByLabel(BottomClothing.class);
+    }
+
+    @Override
+    public Collection<FootwearClothing> listFootwares() {
+        return this.listByLabel(FootwearClothing.class);
+    }
+
+    @Override
+    public Collection<TopClothing> listTops() {
+        return this.listByLabel(TopClothing.class);
+    }
+
+    @Override
+    public Collection<Descriptor> listDescriptors() {
+        return this.listByLabel(Descriptor.class);
+    }
+
+    @Override
+    public Collection<ColorDescriptor> listColorDescriptors() {
+        return this.listByLabel(ColorDescriptor.class);
+    }
+
+    @Override
+    public Collection<FancinessDescriptor> listFancinessDescriptors() {
+        return this.listByLabel(FancinessDescriptor.class);
+    }
+
+    @Override
+    public Collection<BrandDescriptor> listBrandDescriptors() {
+        return this.listByLabel(BrandDescriptor.class);
+    }
+
+    @Override
+    public Collection<SubtypeDescriptor> listSubtypeDescriptors() {
+        return this.listByLabel(SubtypeDescriptor.class);
+    }
+
+    @Override
+    public Collection<Grouping> listGroupings() {
+        return this.listByLabel(Grouping.class);
+    }
+
+    @Override
+    public Collection<CollectionGrouping> listCollectionGroupings() {
+        return this.listByLabel(CollectionGrouping.class);
+    }
+
+    @Override
+    public Collection<SetGrouping> listSetGroupings() {
+        return this.listByLabel(SetGrouping.class);
+    }
+
+    @Override
+    public void addToGrouping(String catalogID, Grouping grouping) {
+        Session session = this.sessionFactory.getNeo4jSession();
+        Clothing c = session.load(Clothing.class, catalogID);
+        c.addGrouping(grouping);
+        session.save(c);
+    }
+
+    @Override
     public void addToUserCloset(User user, Clothing clothing) {
         Session session = this.sessionFactory.getNeo4jSession();
         user.addToCloset(clothing);
@@ -119,9 +225,9 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
     }
 
     @Override
-    public void addToUserCloset(Long id, Clothing clothing) {
+    public void addToUserCloset(String username, Clothing clothing) {
         Session session = this.sessionFactory.getNeo4jSession();
-        User user = session.load(User.class, id);
+        User user = session.load(User.class, username);
         this.addToUserCloset(user, clothing);
     }
 }

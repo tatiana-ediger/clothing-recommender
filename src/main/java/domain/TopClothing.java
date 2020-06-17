@@ -17,4 +17,15 @@ public class TopClothing extends Clothing {
     public ClothingType getType() {
         return ClothingType.TOP;
     }
+
+    @Override
+    public String toString() {
+        return "TopClothing{" +
+                "descriptors=" + this.descriptors.size() +
+                ", groupings=" + this.groupings.size() +
+                ", users=" + this.users.size() +
+                ", catalogID='" + this.catalogID + '\'' +
+                ", name='" + this.name + '\'' +
+                '}';
+    }
 }

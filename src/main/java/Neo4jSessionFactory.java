@@ -4,7 +4,7 @@ import org.neo4j.ogm.session.SessionFactory;
 
 public class Neo4jSessionFactory {
 
-    //private static final Neo4jSessionFactory factory = new Neo4jSessionFactory();
+    private static final Neo4jSessionFactory factory = new Neo4jSessionFactory();
     private final SessionFactory sessionFactory;
     private final Configuration config;
 
@@ -17,7 +17,7 @@ public class Neo4jSessionFactory {
     private Neo4jSessionFactory() {
         this.config = new Configuration.Builder()
                 .uri("bolt://localhost:7687")
-                .credentials("neo4j", "otherpassword")
+                .credentials("neo4j", "demo")
                 .verifyConnection(true)
                 //.database("TestProjectGraph")
                 .useNativeTypes()
@@ -26,17 +26,8 @@ public class Neo4jSessionFactory {
         this.sessionFactory = new SessionFactory(this.config, "domain");
     }
 
-    public static Neo4jSessionFactory getInstance(boolean test) {
-        return null;
-//        if (test) {
-//            //return factory; //TODO: change for testFactory;
-//        } else {
-//            return getInstance();
-//        }
-    }
-
     public static Neo4jSessionFactory getInstance() {
-        return null;//factory;
+        return factory;
     }
 
     public Session getNeo4jSession() {

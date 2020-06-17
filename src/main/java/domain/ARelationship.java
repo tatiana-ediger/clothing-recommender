@@ -7,6 +7,16 @@ public abstract class ARelationship {
 
     @Id
     @GeneratedValue
-    private Long relationshipId;
+    protected Long relationshipId;
 
+    @Override
+    public String toString() {
+        return "ARelationship{" +
+                "relationshipId=" + this.relationshipId +
+                '}';
+    }
+
+    public Long getRelationshipId() {
+        return this.relationshipId;
+    }
 }

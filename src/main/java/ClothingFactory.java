@@ -13,4 +13,8 @@ public class ClothingFactory {
                 throw new IllegalArgumentException("Not a valid clothing type");
         }
     }
+
+    public static Clothing make(String clothingType, String catalogID, String clothingName) {
+        return make(ClothingType.valueOf(clothingType), catalogID, clothingName);
+    }
 }

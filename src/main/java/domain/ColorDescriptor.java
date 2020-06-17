@@ -13,4 +13,12 @@ public class ColorDescriptor extends Descriptor {
         super(value);
     }
 
+    @Override
+    public String toString() {
+        return "ColorDescriptor{" +
+                "value='" + this.value + '\'' +
+                ", clothings=" + this.clothings.size() +
+                '}';
+    }
+
 }

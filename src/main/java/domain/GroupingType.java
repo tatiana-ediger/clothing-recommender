@@ -10,6 +10,13 @@ public enum GroupingType {
         this.type = type;
     }
 
+    @Override
+    public String toString() {
+        return "GroupingType{" +
+                "type='" + this.type + '\'' +
+                '}';
+    }
+
     public String getType() {
         return this.type;
     }
