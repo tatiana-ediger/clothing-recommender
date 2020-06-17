@@ -37,6 +37,10 @@ public class User extends AEntity {
         clothing.addUser(this);
     }
 
+    public Set<Clothing> getCloset() {
+        return this.closet;
+    }
+
     public String getUsername() {
         return this.username;
     }

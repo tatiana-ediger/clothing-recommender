@@ -40,6 +40,10 @@ public abstract class Grouping {
         return this.value.equals(that.value);
     }
 
+    public String getName() {
+        return this.value;
+    }
+
     public Set<Clothing> getClothings() {
         return this.clothings;
     }

@@ -2,10 +2,7 @@ import domain.*;
 import org.neo4j.ogm.model.Result;
 import org.neo4j.ogm.session.Session;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * An implementation of the ClothingRecommenderAPI using Neo4J.
@@ -35,6 +32,18 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
     @Override
     public User loadUserByUsername(String username) {
         return this.sessionFactory.getNeo4jSession().load(User.class, username);
+    }
+
+    @Override
+    public Descriptor loadDescriptor(String type) {
+        Session session = this.sessionFactory.getNeo4jSession();
+        return session.load(Descriptor.class, type);
+    }
+
+    @Override
+    public Grouping loadGrouping(String type) {
+        Session session = this.sessionFactory.getNeo4jSession();
+        return session.load(Grouping.class, type);
     }
 
     @Override
@@ -109,6 +118,76 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
         List<Clothing> clothings = new ArrayList<>();
         result.forEach(clothings::add);
         return clothings;
+    }
+
+    private <T> Collection<T> listByLabel(Class<T> t) {
+        Session session = this.sessionFactory.getNeo4jSession();
+        return session.loadAll(t);
+    }
+
+    @Override
+    public Collection<User> listUsers() {
+        return this.listByLabel(User.class);
+    }
+
+    @Override
+    public Collection<Clothing> listClothings() {
+        return this.listByLabel(Clothing.class);
+    }
+
+    @Override
+    public Collection<BottomClothing> listBottoms() {
+        return this.listByLabel(BottomClothing.class);
+    }
+
+    @Override
+    public Collection<FootwearClothing> listFootwares() {
+        return this.listByLabel(FootwearClothing.class);
+    }
+
+    @Override
+    public Collection<TopClothing> listTops() {
+        return this.listByLabel(TopClothing.class);
+    }
+
+    @Override
+    public Collection<Descriptor> listDescriptors() {
+        return this.listByLabel(Descriptor.class);
+    }
+
+    @Override
+    public Collection<ColorDescriptor> listColorDescriptors() {
+        return this.listByLabel(ColorDescriptor.class);
+    }
+
+    @Override
+    public Collection<FancinessDescriptor> listFancinessDescriptors() {
+        return this.listByLabel(FancinessDescriptor.class);
+    }
+
+    @Override
+    public Collection<BrandDescriptor> listBrandDescriptors() {
+        return this.listByLabel(BrandDescriptor.class);
+    }
+
+    @Override
+    public Collection<SubtypeDescriptor> listSubtypeDescriptors() {
+        return this.listByLabel(SubtypeDescriptor.class);
+    }
+
+    @Override
+    public Collection<Grouping> listGroupings() {
+        return this.listByLabel(Grouping.class);
+    }
+
+    @Override
+    public Collection<CollectionGrouping> listCollectionGroupings() {
+        return this.listByLabel(CollectionGrouping.class);
+    }
+
+    @Override
+    public Collection<SetGrouping> listSetGroupings() {
+        return this.listByLabel(SetGrouping.class);
     }
 
     @Override

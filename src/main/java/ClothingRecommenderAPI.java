@@ -1,5 +1,6 @@
 import domain.*;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -33,6 +34,10 @@ public interface ClothingRecommenderAPI {
      */
     User loadUserByUsername(String userID);
 
+    Descriptor loadDescriptor(String type);
+
+    Grouping loadGrouping(String type);
+
     /**
      * Adds clothing to a user's closet when you have access to the whole user.
      *
@@ -55,7 +60,7 @@ public interface ClothingRecommenderAPI {
      * @param userID the id of the User who we are trying to recommend clothing to.
      * @return a list of recommended clothing.
      */
-    List<Clothing> recommendPurchase(long userID);
+    Collection<Clothing> recommendPurchase(long userID);
 
     /**
      * Given a clothing item the user wants to purchase, also recommends other clothing items that share
@@ -65,7 +70,7 @@ public interface ClothingRecommenderAPI {
      * @param selected the article of clothing the user has selected.
      * @return the list of recommended clothing.
      */
-    List<Clothing> recommendSimilarItems(String userID, Clothing selected);
+    Collection<Clothing> recommendSimilarItems(String userID, Clothing selected);
 
     /**
      * Given a clothing item the user wants to purchase, also recommends other clothing items that are often
@@ -75,5 +80,31 @@ public interface ClothingRecommenderAPI {
      * @param selected the given piece of clothing.
      * @return the list of recommended clothing.
      */
-    List<Clothing> recommendRelatedItems(String userID, Clothing selected);
+    Collection<Clothing> recommendRelatedItems(String userID, Clothing selected);
+
+    Collection<User> listUsers();
+
+    Collection<Clothing> listClothings();
+
+    Collection<BottomClothing> listBottoms();
+
+    Collection<FootwearClothing> listFootwares();
+
+    Collection<TopClothing> listTops();
+
+    Collection<Descriptor> listDescriptors();
+
+    Collection<ColorDescriptor> listColorDescriptors();
+
+    Collection<FancinessDescriptor> listFancinessDescriptors();
+
+    Collection<BrandDescriptor> listBrandDescriptors();
+
+    Collection<SubtypeDescriptor> listSubtypeDescriptors();
+
+    Collection<Grouping> listGroupings();
+
+    Collection<CollectionGrouping> listCollectionGroupings();
+
+    Collection<SetGrouping> listSetGroupings();
 }

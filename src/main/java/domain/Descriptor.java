@@ -40,6 +40,10 @@ public abstract class Descriptor {
         return this.value.equals(that.value);
     }
 
+    public String getName() {
+        return this.value;
+    }
+
     public Set<Clothing> getClothings() {
         return this.clothings; //TODO: abstract with grouping??
     }
