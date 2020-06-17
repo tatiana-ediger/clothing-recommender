@@ -36,6 +36,8 @@ public class Main {
             case "add-to-closet":
                 addToClosetAction(args);
                 break;
+            case "add-user":
+                addUserAction(args);
             case "add-to-grouping":
                 addToGroupingAction(args);
                 break;
@@ -46,9 +48,7 @@ public class Main {
                 recommendPurchaseSimilarAction(args);
                 break;
             case "recommend-purchase":
-                System.out.println("Not yet implemented");
-                System.exit(1);
-                //TODO: recommend
+                recommendPurchase(args);
                 break;
             case "recommend-wear-related":
                 System.out.println("Not yet implemented");
@@ -76,6 +76,20 @@ public class Main {
         }
         System.out.println("Done!");
         System.exit(0);
+    }
+
+    private static void recommendPurchase(String[] args) {
+        String username = getArgumentN(args, 1);
+        Collection<Clothing> recommended = api.recommendPurchase(username);
+        User u = api.loadUserByUsername(username);
+        printList(String.format("Recommending clothes for %s (%s):",
+                u.getName(), u.getUsername()), recommended, true, true);
+    }
+
+    private static void addUserAction(String[] args) {
+        String username = getArgumentN(args, 1);
+        String name = getArgumentN(args, 2);
+        api.addUser(username, name);
     }
 
     private static void recommendPurchaseRelatedAction(String[] args) {
@@ -466,6 +480,9 @@ public class Main {
         s.append(title);
         if (multiline)
             s.append("\n");
+        if (list.iterator().hasNext()) {
+            s.append("\tNothing found");
+        }
         for (Object o : list) {
             s.append((multiline) ? "\t" : " ");
             s.append(o.toString());

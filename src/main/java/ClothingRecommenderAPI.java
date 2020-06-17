@@ -64,6 +64,8 @@ public interface ClothingRecommenderAPI {
      */
     Collection<Clothing> recommendPurchase(String userID);
 
+    void addUser(String username, String name);
+
     /**
      * Given a clothing item the user wants to purchase, also recommends other clothing items that share
      * a lot of similar traits.

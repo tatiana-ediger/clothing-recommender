@@ -132,6 +132,13 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
         return clothings;
     }
 
+    @Override
+    public void addUser(String username, String name) {
+        Session session = this.sessionFactory.getNeo4jSession();
+        User u = new User(username, name);
+        session.save(u);
+    }
+
     private <T> Collection<T> listByLabel(Class<T> t) {
         Session session = this.sessionFactory.getNeo4jSession();
         return session.loadAll(t, 3);
