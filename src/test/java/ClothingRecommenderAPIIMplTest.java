@@ -30,6 +30,10 @@ public class ClothingRecommenderAPIIMplTest {
 
         databaseServer.withExposedPorts(7474, 7687);
 
+        String https = databaseServer.getHttpUrl();
+        String bolt = databaseServer.getBoltUrl();
+
+
         Configuration configuration = new Configuration.Builder()
                 .uri(databaseServer.getBoltUrl())
                 //.credentials("neo4j", databaseServer.getAdminPassword())
