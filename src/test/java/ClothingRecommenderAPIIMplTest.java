@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 public class ClothingRecommenderAPIIMplTest {
 
     @Container
-    private static final Neo4jContainer databaseServer = new Neo4jContainer().withoutAuthentication();
+    private static final Neo4jContainer databaseServer = new Neo4jContainer();
 
     static Neo4jSessionFactory sessionFactory;
     static ClothingRecommenderAPIIMpl api;
@@ -31,8 +31,8 @@ public class ClothingRecommenderAPIIMplTest {
         databaseServer.withExposedPorts(7474, 7687);
 
         Configuration configuration = new Configuration.Builder()
-                .uri(databaseServer.getBoltUrl())
-                //.credentials("neo4j", databaseServer.getAdminPassword())
+                .uri(databaseServer.withoutAuthentication().getBoltUrl())
+                .credentials("neo4j", databaseServer.getAdminPassword())
                 .build();
 
 
