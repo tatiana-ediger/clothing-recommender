@@ -542,7 +542,7 @@ public class Main {
             case "tops":
                 printList("All tops: ", api.listTops(), true, true);
                 break;
-            case "footwear":
+            case "footwears":
                 printList("All footwear: ", api.listFootwares(), true, true);
                 break;
             case "users":
