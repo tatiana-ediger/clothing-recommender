@@ -4,7 +4,7 @@ import org.neo4j.ogm.session.SessionFactory;
 
 public class Neo4jSessionFactory {
 
-    private static final Neo4jSessionFactory factory = new Neo4jSessionFactory();
+    private static Neo4jSessionFactory factory;
     private final SessionFactory sessionFactory;
     private final Configuration config;
 
@@ -27,6 +27,9 @@ public class Neo4jSessionFactory {
     }
 
     public static Neo4jSessionFactory getInstance() {
+        if (factory == null) {
+            factory = new Neo4jSessionFactory();
+        }
         return factory;
     }
 
