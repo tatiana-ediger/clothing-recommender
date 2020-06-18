@@ -35,7 +35,6 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
     }
 
     @Override
-<<<<<<< Updated upstream
     public Descriptor loadDescriptor(String value) {
         Session session = this.sessionFactory.getNeo4jSession();
         return session.load(Descriptor.class, value);
@@ -60,8 +59,6 @@ public class ClothingRecommenderAPIIMpl implements ClothingRecommenderAPI {
     }
 
     @Override
-=======
->>>>>>> Stashed changes
     public List<Clothing> recommendPurchase(String userID) {
         //Rank the number of connections each clothing
         Session session = this.sessionFactory.getNeo4jSession();
